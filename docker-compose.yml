@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:latest
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: foto_foireuse_db
+      POSTGRES_USER: USER
+      POSTGRES_PASSWORD: TEST
+    ports:
+      - "5432:5432"
+
+  web:
+    build:
+      context: djangoProject
+      dockerfile: Dockerfile
+    #command: python manage.py runserver 0.0.0.0:8000
+    #volumes:
+      #- .:/FotoFoireuseDjango
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://USER:TEST@db/foto_foireuse_db
