@@ -2,8 +2,8 @@ version: '3.8'
 services:
   db:
     image: postgres:latest
-    volumes:
-      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    #volumes:
+    #  - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       POSTGRES_DB: foto_foireuse_db
       POSTGRES_USER: USER
@@ -12,9 +12,11 @@ services:
       - "5432:5432"
 
   web:
+    working_dir: /FotoFoireuseDjango
     build:
       context: djangoProject
       dockerfile: Dockerfile
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     #command: python manage.py runserver 0.0.0.0:8000
     #volumes:
       #- .:/FotoFoireuseDjango
@@ -22,5 +24,8 @@ services:
       - "8000:8000"
     depends_on:
       - db
+    healthcheck:
+      test: curl -f http://localhost:8000
+      interval: 1m30s
     environment:
       DATABASE_URL: postgres://USER:TEST@db/foto_foireuse_db

@@ -7,5 +7,5 @@ RUN python3 -m venv .venv
 COPY pythonLib.txt .
 RUN pip install --no-cache-dir -r pythonLib.txt
 
-CMD ["python", "manage.py", "migrate"]
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+#CMD ["python", "manage.py", "migrate"]
+#CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
