@@ -3,7 +3,7 @@ services:
   db:
     image: postgres:latest
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       POSTGRES_DB: foto_foireuse_db
       POSTGRES_USER: USER
