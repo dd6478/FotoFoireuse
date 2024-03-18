@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'fotoFoireuse.apps.FotofoireuseConfig',
+    'polls.apps.PollsConfig',
 ]
 
 MIDDLEWARE = [
