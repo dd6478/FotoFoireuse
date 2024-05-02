@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block title %}{% endblock %}
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <label for="question-select">Choose a question:</label>
+    <select name="questions" id="questions-select">
+    <option value="0">--Please choose an option--</option>
+    {% for question in questions %}
+        <option value="{{ question.id }}">{{ question.question_text }}</option>
+    {% endfor %}
+    </select>
+</form>
+<div id="question-choices"></div>
+<script>
+    document.querySelector("#questions-select").addEventListener("change", event => {
+        event.preventDefault();
+        let data = {};
+        data["question"] = document.getElementById("questions-select").value;
+        let crsfTokenValue = document.querySelector("[name=csrfmiddlewaretoken]").value;
+        const request = new Request('{% url "polls:get_choices" %}', {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers:{
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRFToken": crsfTokenValue,
+            }
+        });
+        fetch(request)
+            .then(response => response.json())
+            .then(result => {
+                console.log(result);
+                let choices = result["choices"];
+                const resultElement = document.querySelector("#question-choices");
+                resultElement.innerHTML = " ";
+                let span = document.createElement("span");
+                if (choices.length>0) span.innerHTML = "Question choices:"
+                resultElement.appendChild(span);
+                let ul=document.createElement("ul");
+                resultElement.appendChild(ul);
+                choices.forEach((element) => {
+                    var li = document.createElement("li");
+                    li.innerHTML = element.choice_text+" - votes : "+element.votes;
+                    ul.appendChild(li);
+                })
+            })
+    });
+</script>
+{% endblock %}

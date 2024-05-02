@@ -1,7 +1,11 @@
-from django.http import HttpResponse, Http404, HttpResponseRedirect
+import json
+
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, Http404, HttpResponseRedirect, JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import generic
+from django.views.decorators.csrf import csrf_exempt
 
 from .forms import QuestionForm, ChoiceForm
 from .models import Question, Choice
@@ -9,8 +13,6 @@ from .models import Question, Choice
 
 # Create your views here.
 
-def home(request):
-    return render(request, "home.html")
 
 def list_view(request):
     context={}
@@ -117,3 +119,30 @@ class CreateChoiceView(generic.CreateView):
     template_name = 'polls/create_choice.html'
     success_url = reverse_lazy('polls:index')
 """
+@login_required
+def choice(request):
+    context={}
+    context['questions'] = Question.objects.all()
+    return render(request, "polls/choice.html", context)
+
+def get_choices(request):
+    is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
+    if is_ajax:
+        if request.method == 'POST':
+            data = json.load(request)
+            q_id = data.get('question')
+            choices = list(Choice.objects.filter(question_id=int(q_id)).values())
+            return JsonResponse({"choices": choices})
+        return JsonResponse({"status":"invalid request"}, status=400)
+    else:
+        return HttpResponseBadRequest("Invalid request")
+
+@csrf_exempt
+def search_account(request):
+    if request.method == 'POST':
+        search_text = request.POST.get('search_text')
+        accounts = Account.objects.filter(name__icontains=search_text)
+        accounts_list = list(accounts.values())
+        return JsonResponse({"accounts": accounts_list})
+    else:
+        return JsonResponse({"error": "Invalid request"}, status=400)

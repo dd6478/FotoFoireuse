@@ -12,5 +12,7 @@ urlpatterns = [
     path('update/<int:pk>/', views.update_view, name='update'),
     path('delete/<int:pk>/', views.delete_view, name='delete'),
     path('choice/create/', views.create_choice_view, name='createChoice'),
-    path('home/', views.home, name='home')
+    path('choice/', views.choice, name='choice'),
+    path('getchoice/', views.get_choices, name='get_choices'),
+    path('accountSearch/', views.search_account, name='accountSearch'),
 ]

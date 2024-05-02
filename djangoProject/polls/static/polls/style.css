@@ -1,0 +1,8 @@
+li a {
+    color: white;
+}
+
+body {
+    background: darkgray url("images/background.jpg") no-repeat;
+    color: #ffffff;
+}

@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block title %} Create Question {% endblock %}
 {% block content %}
-    <form method="post"
+    <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Save">

@@ -12,12 +12,12 @@ services:
       - "5432:5432"
 
   web:
-    working_dir: /FotoFoireuseDjango
+    working_dir: /djangoProject
     build:
       context: djangoProject
       dockerfile: Dockerfile
     volumes:
-      - ./djangoProject:/FotoFoireuseDjango
+      - ./djangoProject:/djangoProject
     command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     #command: python manage.py runserver 0.0.0.0:8000
     #volumes:
@@ -31,3 +31,4 @@ services:
       interval: 1m30s
     environment:
       DATABASE_URL: postgres://USER:TEST@db/foto_foireuse_db
+      PYTHONPATH: /djangoProject:$PYTHONPATH
