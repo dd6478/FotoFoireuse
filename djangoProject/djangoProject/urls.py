@@ -20,11 +20,5 @@ from django.contrib import admin
 from django.urls import path, include
 from . import views
 urlpatterns = [
-    path('', views.home, name="home"),
-    path('admin/', admin.site.urls),
-    path("foto/", include("fotoFoireuse.urls")),
-    path("polls/", include("polls.urls")),
-    path("accounts/", include("accounts.urls")),
+    path('api/', include('Account.urls')),
 ]
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

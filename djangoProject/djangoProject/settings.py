@@ -37,10 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'fotoFoireuse.apps.FotofoireuseConfig',
-    'polls.apps.PollsConfig',
-    'accounts.apps.AccountsConfig',
+    'rest_framework_simplejwt',
+    'FotoFoireuse.apps.FotofoireuseConfig',
+    'Account.apps.AccountConfig',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
