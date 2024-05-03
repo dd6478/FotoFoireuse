@@ -72,8 +72,27 @@ def logout(request):
         return HttpResponseBadRequest('Bad request')
 
 
+@csrf_exempt
 def testLogin(request):
-    if request.user.is_authenticated:
-        return HttpResponse({"message": "Token d'accès valide"}, status=200)
+    if request.method == 'POST':
+        # Extract the token from the Authorization header
+        auth_header = request.headers.get('Authorization')
+        if auth_header is None:
+            return HttpResponseBadRequest('Bad request: No Authorization header')
+
+        # The auth_header should be in the format 'Bearer <token>'
+        parts = auth_header.split()
+        if len(parts) != 2 or parts[0].lower() != 'bearer':
+            return HttpResponseBadRequest('Bad request: Authorization header must be in the format "Bearer <token>"')
+
+        token = parts[1]
+
+        try:
+            # Decode the token and check its validity
+            AccessToken(token)
+        except:
+            return HttpResponseBadRequest('Invalid token')
+
+        return HttpResponse('Token is valid', status=200)
     else:
-        return HttpResponse({"message": "Token d'accès invalide"}, status=401)
+        return HttpResponseBadRequest('Bad request: Use POST method')
