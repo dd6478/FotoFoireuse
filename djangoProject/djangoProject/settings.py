@@ -37,10 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'rest_framework_simplejwt',
-    'FotoFoireuse.apps.FotofoireuseConfig',
     'Account.apps.AccountConfig',
 ]
+
+AUTH_USER_MODEL = 'Account.UserProfile'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
