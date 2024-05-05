@@ -1,17 +1,20 @@
-import json
+from datetime import datetime
 
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 
-from .models import UserProfile as User
+from .models import User as User
 from rest_framework import permissions, viewsets
 from .serializers import UserSerializer
+
+
+def index(request):
+    return HttpResponse("Hello, world. You're on the FotoFoireuse API")
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -23,6 +26,9 @@ class UserViewSet(viewsets.ModelViewSet):
         if self.action in ['register', 'login']:
             return [AllowAny()]
         return super().get_permissions()
+
+
+
     @action(detail=False, methods=['post'])
     def register(self, request):
         username = request.data.get('username')
@@ -58,7 +64,8 @@ class UserViewSet(viewsets.ModelViewSet):
 
         refresh = RefreshToken.for_user(user)
         access = AccessToken.for_user(user)
-
+        user.last_login = datetime.now()
+        user.save()
         return Response({
             'refresh': str(refresh),
             'access': str(access),

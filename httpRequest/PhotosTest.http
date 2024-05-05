@@ -1,0 +1,27 @@
+### login
+POST http://localhost:8000/api/user/login/
+content-type: application/json
+
+{
+    "username": "dd64",
+    "password": "dev"
+}
+
+###
+POST  http://localhost:8000/api/concours/1/photos/2/votes/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0ODcwOTkzLCJpYXQiOjE3MTQ4NzA2OTMsImp0aSI6ImIwNWY4YTdjYzE2NjRkOTdhZjVhMjMwZTJlYTZhMDFiIiwidXNlcl9pZCI6MX0.IlPgnxsbXuJRqMMx1Q5zD-tSoWyBrw7G2cmK3WA6rXA
+content-type: application/json
+
+{
+    "note": 5
+}
+
+
+### test
+POST http://localhost:8000/api/photos/1/commentaires/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0ODY0NzEwLCJpYXQiOjE3MTQ4NjQ0MTAsImp0aSI6ImNjZDI1NDc3MGM4ODRhZWE5NWRmYjg4NzRlZDJjNGE0IiwidXNlcl9pZCI6MX0.jHN-rDX89jWIbexJmupjONNyDOFz8QKH0kAqUGShz8A
+content-type: application/json
+
+{
+    "texte": "test"
+}

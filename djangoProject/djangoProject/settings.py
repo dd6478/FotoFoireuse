@@ -40,9 +40,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'Account.apps.AccountConfig',
+    'FotoFoireuse.apps.FotofoireuseConfig',
 ]
 
-AUTH_USER_MODEL = 'Account.UserProfile'
+AUTH_USER_MODEL = 'Account.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

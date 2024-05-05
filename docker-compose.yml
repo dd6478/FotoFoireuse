@@ -27,8 +27,8 @@ services:
     depends_on:
       - db
     healthcheck:
-      test: curl -f http://localhost:8000
-      interval: 1m30s
+      test: curl -f http://localhost:8000/api/
+      interval: 1m00s
     environment:
       DATABASE_URL: postgres://USER:TEST@db/foto_foireuse_db
       PYTHONPATH: /djangoProject:$PYTHONPATH

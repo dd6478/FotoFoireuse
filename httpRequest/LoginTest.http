@@ -1,0 +1,37 @@
+### health test
+GET http://localhost:8000/api/
+
+### register
+POST http://localhost:8000/api/user/register/
+content-type: application/json
+
+{
+    "username": "dd64",
+    "password": "dev",
+    "email": "dd64@dev.fr"
+}
+
+### login
+POST http://localhost:8000/api/user/login/
+content-type: application/json
+
+{
+    "username": "dd64",
+    "password": "dev"
+}
+
+### refresh token
+POST http://localhost:8000/api/token/refresh/
+content-type: application/json
+
+{
+    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcxNDkzNTI3OCwiaWF0IjoxNzE0ODQ4ODc4LCJqdGkiOiI1ZWYxOTAyZTBjNzM0NjJjOGEzYTk5N2FkNWI2OTFlYSIsInVzZXJfaWQiOjJ9.AF2A-7UK0hPuWLT9oaXI1g3o56TVzrH7UDvuIEDZtbY"
+}
+
+### test
+GET http://localhost:8000/api/user/test/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0ODU5ODQ2LCJpYXQiOjE3MTQ4NTk1NDYsImp0aSI6ImMxZTdiNDk0M2NmZDRhMGY5YWUzZmJhMzk0YzE3ODBkIiwidXNlcl9pZCI6MX0.LVcBISVQLFmUJszeDqvVcuUMK-W4AI1RY6uaj9hamwc
+
+###
+GET http://localhost:8000/api/user/test/
+Authorization: Barear eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0ODYwNTYxLCJpYXQiOjE3MTQ4NjAyNjEsImp0aSI6IjlhMjJkZmYxZTJkYTRlNmU5YjE1NGQyMDViNDFiMWM3IiwidXNlcl9pZCI6MX0.AqnTM5Pixiqc0SjSsL2tIKM0FSqRJQaAKEkiLMmBshE
