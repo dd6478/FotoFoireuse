@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'Account.apps.AccountConfig',
     'FotoFoireuse.apps.FotofoireuseConfig',
+    'drf_yasg',
 ]
 
 AUTH_USER_MODEL = 'Account.User'

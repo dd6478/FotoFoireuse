@@ -20,6 +20,24 @@ Content-Type: application/json
     "password": "jeTest"
 }
 
+### test
+GET http://dd64.fr:8000/api/concours/1/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2MzcxNjg2LCJpYXQiOjE3MTYzNzA5NjEsImp0aSI6IjE4YTdmMDhmNDQ3NTRiYjY4OTFlMGQyZTk5M2UxNjQxIiwidXNlcl9pZCI6MX0.SAiaFV0GmXi6tsHBC1uikDQVytCESdZFLMdcaMO-Cfc
+
+
 ###
-GET http://dd64.fr:8000/api/user/
-Authorization : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2MzcwNzk3LCJpYXQiOjE3MTYzNzA0OTcsImp0aSI6ImQ3OGY2ZTVjZmUzZTQ3YzRiOThlZjZiZTI1M2I2MjBmIiwidXNlcl9pZCI6MX0.11IxD_1RG2eoLPrtcapnKIJ9ZQR9bYmEiuG4Lwd768k
+POST http://dd64.fr:8000/api/token/refresh/
+Content-Type: application/json
+
+{
+    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcxNjQ1NzM2MSwiaWF0IjoxNzE2MzcwOTYxLCJqdGkiOiI4N2ZkMjZhYjZiNmQ0NGYyOWU5YmRhYTZlNGE1NWEwZCIsInVzZXJfaWQiOjF9.xoFhIYBOR2YoMvaET-eMRn1O9D0bOy2jvaU5Ei76eds"
+  }
+
+###
+POST http://dd64.fr:8000/api/user/logout/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2MzcxOTYzLCJpYXQiOjE3MTYzNzA5NjEsImp0aSI6IjcxNTUyNWI5MTdkZjQzOTRiOTljZTYxZDYzMmY3MWZlIiwidXNlcl9pZCI6MX0.igw8_Qth3AkKbzJzDEylsmMsWaVV61zbyBzM_upYseI
+Content-Type: application/json
+
+{
+    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcxNjQ1NzM2MSwiaWF0IjoxNzE2MzcwOTYxLCJqdGkiOiI4N2ZkMjZhYjZiNmQ0NGYyOWU5YmRhYTZlNGE1NWEwZCIsInVzZXJfaWQiOjF9.xoFhIYBOR2YoMvaET-eMRn1O9D0bOy2jvaU5Ei76eds"
+  }
