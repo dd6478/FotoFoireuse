@@ -5,8 +5,8 @@ from django.db import models
 class Photos(models.Model):
     ID = models.AutoField(primary_key=True)
     user = models.ForeignKey('Account.User', on_delete=models.CASCADE)
-    concours = models.ForeignKey('Concours', on_delete=models.CASCADE)
-    url = models.CharField(max_length=100)
+    concours = models.ForeignKey('Concours', on_delete=models.CASCADE, related_name='photos')
+    image = models.ImageField(upload_to='photos/')
     title = models.CharField(max_length=50)
     description = models.TextField()
 
@@ -19,7 +19,7 @@ class Commentaires(models.Model):
     user = models.ForeignKey('Account.User', on_delete=models.CASCADE)
     photo = models.ForeignKey('Photos', on_delete=models.CASCADE)
     texte = models.TextField()
-    ajoutsDate = models.DateTimeField()
+    ajoutsDate = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.ID

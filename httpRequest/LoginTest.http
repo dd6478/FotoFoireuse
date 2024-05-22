@@ -25,7 +25,7 @@ POST http://localhost:8000/api/token/refresh/
 content-type: application/json
 
 {
-    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcxNDkzNTI3OCwiaWF0IjoxNzE0ODQ4ODc4LCJqdGkiOiI1ZWYxOTAyZTBjNzM0NjJjOGEzYTk5N2FkNWI2OTFlYSIsInVzZXJfaWQiOjJ9.AF2A-7UK0hPuWLT9oaXI1g3o56TVzrH7UDvuIEDZtbY"
+    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcxNjM2NjY5NiwiaWF0IjoxNzE2MjgwMjk2LCJqdGkiOiJmOTg2ZGIzNjgzYTc0NmMyYmNmN2Q1YjYzZWQ2MzVjMSIsInVzZXJfaWQiOjF9.97FXKcEzHKcgmw3UGwueHXe117wxFyvhyLcSa-23G6Y"
 }
 
 ### test

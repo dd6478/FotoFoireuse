@@ -1,15 +1,13 @@
 from django.urls import path, include
-from rest_framework_nested import routers
+from rest_framework import routers
+from .views import ConcoursViewSet, PhotosViewSet, CommentairesViewSet, VotesViewSet
 
-from .views import ConcoursViewSet, PhotosViewSet
-
-app_name = 'concours'
+app_name = 'FotoFoireuse'
 router = routers.SimpleRouter()
 router.register(r'concours', ConcoursViewSet)
-
-concours_router = routers.NestedSimpleRouter(router, r'concours', lookup='concours')
-concours_router.register(r'photos', PhotosViewSet)
+router.register(r'photos', PhotosViewSet)
+router.register(r'commentaires', CommentairesViewSet)
+router.register(r'votes', VotesViewSet)
 urlpatterns = [
     path('', include(router.urls)),
-    path('', include(concours_router.urls)),
 ]

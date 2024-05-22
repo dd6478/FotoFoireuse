@@ -8,17 +8,17 @@ content-type: application/json
 }
 
 ###
-POST  http://localhost:8000/api/concours/1/photos/2/votes/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0ODcwOTkzLCJpYXQiOjE3MTQ4NzA2OTMsImp0aSI6ImIwNWY4YTdjYzE2NjRkOTdhZjVhMjMwZTJlYTZhMDFiIiwidXNlcl9pZCI6MX0.IlPgnxsbXuJRqMMx1Q5zD-tSoWyBrw7G2cmK3WA6rXA
+GET http://localhost:8000/api/concours/1/photos/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2MzAzNjU0LCJpYXQiOjE3MTYzMDMzNTQsImp0aSI6ImQyZmMxYTg2Yzg0OTRlYTFhMTBjNmIyMWY3N2Q5YjFlIiwidXNlcl9pZCI6MX0.SmGoinLDDPreXidye4R06cgh1Dwh71BgDlyrENruN6c
 content-type: application/json
 
 {
-    "note": 5
+  "texte": "teettt"
 }
 
 
 ### test
-POST http://localhost:8000/api/photos/1/commentaires/
+POST http://localhost:8000/api/conc
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0ODY0NzEwLCJpYXQiOjE3MTQ4NjQ0MTAsImp0aSI6ImNjZDI1NDc3MGM4ODRhZWE5NWRmYjg4NzRlZDJjNGE0IiwidXNlcl9pZCI6MX0.jHN-rDX89jWIbexJmupjONNyDOFz8QKH0kAqUGShz8A
 content-type: application/json
 

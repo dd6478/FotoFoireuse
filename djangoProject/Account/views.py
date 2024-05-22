@@ -34,6 +34,9 @@ class UserViewSet(viewsets.ModelViewSet):
         username = request.data.get('username')
         password = request.data.get('password')
         email = request.data.get('email')
+        first_name = request.data.get('first_name')
+        last_name = request.data.get('last_name')
+        sexe = request.data.get('sexe')
 
         if not username or not password or not email:
             return Response({'error': 'Username, password and email are required'}, status=400)
@@ -41,7 +44,7 @@ class UserViewSet(viewsets.ModelViewSet):
         if User.objects.filter(username=username).exists():
             return Response({'error': 'Username already exists'}, status=400)
 
-        user = User(username=username, email=email, password=make_password(password))
+        user = User(username=username, email=email, password=make_password(password), first_name=first_name, last_name=last_name, sexe=sexe)
         user.save()
 
         return Response({'message': 'User created successfully'}, status=201)
