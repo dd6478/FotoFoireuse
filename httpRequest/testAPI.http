@@ -1,0 +1,25 @@
+###
+POST http://dd64.fr:8000/api/user/register/
+Content-Type: application/json
+
+{
+    "username": "dd64",
+    "password": "jeTest",
+    "first_name": "Dodo",
+    "last_name": "le pedo",
+    "email": "dodoLePedo@gmail.fr",
+    "sexe":"NB"
+}
+
+###
+POST http://dd64.fr:8000/api/user/login/
+Content-Type: application/json
+
+{
+    "username": "dd64",
+    "password": "jeTest"
+}
+
+###
+GET http://dd64.fr:8000/api/user/
+Authorization : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2MzcwNzk3LCJpYXQiOjE3MTYzNzA0OTcsImp0aSI6ImQ3OGY2ZTVjZmUzZTQ3YzRiOThlZjZiZTI1M2I2MjBmIiwidXNlcl9pZCI6MX0.11IxD_1RG2eoLPrtcapnKIJ9ZQR9bYmEiuG4Lwd768k
