@@ -10,6 +10,6 @@ jobs:
     steps:
       - name: Deploy to Server
         run: |
-          ssh -o StrictHostKeyChecking=no dd64@dd64.fr "cd /path/to/your/application && git pull"
+          ssh -i ${{ secrets.DEPLOYMENT_KEY }} dd64@dd64.fr "cd /path/to/your/application && git pull"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.DEPLOYMENT_KEY }}
