@@ -2,6 +2,7 @@ import os
 
 from django.db import IntegrityError
 from django.http import FileResponse
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.generics import get_object_or_404
@@ -68,6 +69,7 @@ class PhotosViewSet(SecuModelViewSet):
     serializer_class = PhotosSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    @swagger_auto_schema(auto_schema=None)
     def create(self, request, *args, **kwargs):
         raise MethodNotAllowed('POST')
 
@@ -120,6 +122,7 @@ class VotesViewSet(SecuModelViewSet):
     serializer_class = VoteSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    @swagger_auto_schema(auto_schema=None)
     def create(self, request, *args, **kwargs):
         raise MethodNotAllowed('POST')
 
@@ -128,6 +131,7 @@ class CommentairesViewSet(SecuModelViewSet):
     serializer_class = CommentairesSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    @swagger_auto_schema(auto_schema=None)
     def create(self, request, *args, **kwargs):
         raise MethodNotAllowed('POST')
 

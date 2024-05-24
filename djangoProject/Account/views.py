@@ -2,7 +2,10 @@ from datetime import datetime
 
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError, JsonResponse
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import action
+from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework_simplejwt.exceptions import TokenError
@@ -21,6 +24,10 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    @swagger_auto_schema(auto_schema=None)
+    def create(self, request, *args, **kwargs):
+        raise MethodNotAllowed('POST')
 
     def get_permissions(self):
         if self.action in ['register', 'login']:
@@ -86,6 +93,14 @@ class UserViewSet(viewsets.ModelViewSet):
 
         return Response({'message': 'User created successfully'}, status=201)
 
+    @swagger_auto_schema(method='post', request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'username': openapi.Schema(type=openapi.TYPE_STRING, description='Username'),
+            'password': openapi.Schema(type=openapi.TYPE_STRING, description='Password'),
+        },
+        required=['username', 'password']
+    ))
     @action(detail=False, methods=['post'])
     def login(self, request):
         username = request.data.get('username')

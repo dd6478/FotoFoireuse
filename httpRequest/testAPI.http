@@ -3,12 +3,12 @@ POST http://localhost:8000/api/user/register/
 Content-Type: application/json
 
 {
-    "username": "dd64",
-    "password": "jeTest",
-    "first_name": "Dodo",
-    "last_name": "le pedo",
-    "email": "dodoLePedo@gmail.fr",
-    "sexe":"NB"
+    "username": "cyp",
+    "password": "cypcyp",
+    "first_name": "Cyp",
+    "last_name": "le cypcyp",
+    "email": "cypcyp@gmail.fr",
+    "sexe":"M"
 }
 
 ###
