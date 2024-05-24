@@ -8,8 +8,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create SSH key file
+        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+        shell: bash
+
+      - name: Set permissions for SSH key
+        run: chmod 600 private_key.pem
+        shell: bash
+
+      - name: Add SSH key and configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H dd64.fr >> ~/.ssh/known_hosts
+        shell: bash
+
       - name: Deploy to Server
         run: |
-          ssh -i ${{ secrets.DEPLOYMENT_KEY }} dd64@dd64.fr "cd /path/to/your/application && git pull"
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.DEPLOYMENT_KEY }}
+          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /path/to/your/application && git pull"
+        shell: bash
+
+      - name: Cleanup
+        run: rm private_key.pem
+        shell: bash
