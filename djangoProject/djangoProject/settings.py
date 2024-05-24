@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'Account.apps.AccountConfig',
     'FotoFoireuse.apps.FotofoireuseConfig',
     'drf_yasg',
+    'corsheaders'
 ]
 
 AUTH_USER_MODEL = 'Account.User'
@@ -60,7 +61,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'djangoProject.urls'
 
