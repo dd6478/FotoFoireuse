@@ -1,0 +1,15 @@
+name: deployment
+on:
+    push:
+        branches:
+        - master
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Server
+        run: |
+          ssh -o StrictHostKeyChecking=no dd64@dd64.fr "cd /path/to/your/application && git pull"
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DEPLOYMENT_KEY }}
