@@ -1,30 +1,41 @@
+import os
+
 from django.db import IntegrityError
-from django.shortcuts import render
-from rest_framework import viewsets, permissions, status
-from rest_framework.decorators import action
+from django.http import FileResponse
+from rest_framework import status
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.generics import get_object_or_404
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
-
-from .models import Photos, Commentaires, Vote, Concours
-from .serializers import PhotosSerializer, CommentairesSerializer, VoteSerializer, ConcoursSerializer
 
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import Concours, Photos, Commentaires, Vote
 from .serializers import ConcoursSerializer, PhotosSerializer, CommentairesSerializer, VoteSerializer
-
-from rest_framework import viewsets, permissions
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from .models import Concours, Photos, Commentaires, Vote
-from .serializers import ConcoursSerializer, PhotosSerializer, CommentairesSerializer, VoteSerializer
+from django.conf import settings
 
 
-class ConcoursViewSet(viewsets.ModelViewSet):
+class SecuModelViewSet(viewsets.ModelViewSet):
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.user == request.user or request.user.is_superuser:
+            return super().update(request, *args, **kwargs)
+        return Response({"Error" : "You're not allowed to do that"},status=status.HTTP_403_FORBIDDEN)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.user == request.user or request.user.is_superuser:
+            return super().destroy(request, *args, **kwargs)
+        return Response({"Error" : "You're not allowed to do that"},status=status.HTTP_403_FORBIDDEN)
+
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.user == request.user or request.user.is_superuser:
+            return super().partial_update(request, *args, **kwargs)
+        return Response({"Error" : "You're not allowed to do that"},status=status.HTTP_403_FORBIDDEN)
+
+
+class ConcoursViewSet(SecuModelViewSet):
     queryset = Concours.objects.all()
     serializer_class = ConcoursSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -41,7 +52,8 @@ class ConcoursViewSet(viewsets.ModelViewSet):
             image = request.FILES['image']
             if image.content_type not in ['image/jpeg', 'image/png']:
                 return Response({'error': 'Invalid image format'}, status=status.HTTP_400_BAD_REQUEST)
-            photo = Photos.objects.create(concours=concours, image=image, title=request.data.get('title'), user=request.user, description=request.data.get('description') or 'Empty')
+            photo = Photos.objects.create(concours=concours, image=image, title=request.data.get('title'),
+                                          user=request.user, description=request.data.get('description') or 'Empty')
             serializer = PhotosSerializer(photo, context={'request': request})
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -51,13 +63,19 @@ class ConcoursViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
 
 
-class PhotosViewSet(viewsets.ModelViewSet):
+class PhotosViewSet(SecuModelViewSet):
     queryset = Photos.objects.all()
     serializer_class = PhotosSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         raise MethodNotAllowed('POST')
+
+    @action(detail=True, methods=['get'])
+    def download(self, request, pk=None):
+        photo = get_object_or_404(Photos, pk=pk)
+        mediaPath = os.path.join(settings.MEDIA_ROOT, photo.image.name)
+        return FileResponse(open(mediaPath, 'rb'))
 
     @action(detail=True, methods=['get', 'post'])
     def commentaires(self, request, pk=None):
@@ -84,7 +102,7 @@ class PhotosViewSet(viewsets.ModelViewSet):
                 return Response({'error': 'Missing note'}, status=400)
             photo = self.get_object()
             user = request.user
-            try :
+            try:
                 vote = Vote.objects.create(user=user, photo=photo, **request.data)
             except IntegrityError:
                 return Response({'error': 'Already voted for this photo'}, status=400)
@@ -96,12 +114,20 @@ class PhotosViewSet(viewsets.ModelViewSet):
             serializer = VoteSerializer(votes, many=True, context={'request': request})
             return Response(serializer.data)
 
-class VotesViewSet(viewsets.ModelViewSet):
+
+class VotesViewSet(SecuModelViewSet):
     queryset = Vote.objects.all()
     serializer_class = VoteSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-class CommentairesViewSet(viewsets.ModelViewSet):
+    def create(self, request, *args, **kwargs):
+        raise MethodNotAllowed('POST')
+
+class CommentairesViewSet(SecuModelViewSet):
     queryset = Commentaires.objects.all()
     serializer_class = CommentairesSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        raise MethodNotAllowed('POST')
+

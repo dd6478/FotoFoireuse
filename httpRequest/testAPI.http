@@ -1,5 +1,5 @@
 ###
-POST http://dd64.fr:8000/api/user/register/
+POST http://localhost:8000/api/user/register/
 Content-Type: application/json
 
 {
@@ -12,7 +12,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://dd64.fr:8000/api/user/login/
+POST http://localhost:8000/api/user/login/
 Content-Type: application/json
 
 {
@@ -21,12 +21,12 @@ Content-Type: application/json
 }
 
 ### test
-GET http://dd64.fr:8000/api/concours/1/
+GET http://localhost:8000/api/concours/1/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2MzcxNjg2LCJpYXQiOjE3MTYzNzA5NjEsImp0aSI6IjE4YTdmMDhmNDQ3NTRiYjY4OTFlMGQyZTk5M2UxNjQxIiwidXNlcl9pZCI6MX0.SAiaFV0GmXi6tsHBC1uikDQVytCESdZFLMdcaMO-Cfc
 
 
 ###
-POST http://dd64.fr:8000/api/token/refresh/
+POST http://localhost:8000/api/token/refresh/
 Content-Type: application/json
 
 {
@@ -34,10 +34,43 @@ Content-Type: application/json
   }
 
 ###
-POST http://dd64.fr:8000/api/user/logout/
+POST http://localhost:8000/api/user/logout/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2MzcxOTYzLCJpYXQiOjE3MTYzNzA5NjEsImp0aSI6IjcxNTUyNWI5MTdkZjQzOTRiOTljZTYxZDYzMmY3MWZlIiwidXNlcl9pZCI6MX0.igw8_Qth3AkKbzJzDEylsmMsWaVV61zbyBzM_upYseI
 Content-Type: application/json
 
 {
     "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcxNjQ1NzM2MSwiaWF0IjoxNzE2MzcwOTYxLCJqdGkiOiI4N2ZkMjZhYjZiNmQ0NGYyOWU5YmRhYTZlNGE1NWEwZCIsInVzZXJfaWQiOjF9.xoFhIYBOR2YoMvaET-eMRn1O9D0bOy2jvaU5Ei76eds"
   }
+
+###
+POST http://localhost:8000/api/photos/4/votes/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2NTM3OTIzLCJpYXQiOjE3MTY1Mzc2MjMsImp0aSI6ImRiZTBiMmQ1MGQ1MTQzOGU5M2JhZWQyYWNhOTM0MWI5IiwidXNlcl9pZCI6Mn0.pgOdJKgEvM7oEeqlPbNGhK02GfHjgtt7_eU1kOsk6PI
+Content-Type: application/json
+
+{
+    "note": 5
+}
+###
+POST http://localhost:8000/api/user/login/
+content-type: application/json
+
+{
+    "username": "testApi",
+    "password": "testAPI"
+}
+
+###
+GET http://localhost:8000/api/votes/2/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2NTM4NjUyLCJpYXQiOjE3MTY1MzgzNTIsImp0aSI6ImU5MzBhOWM3MmI3ZDQyMTk5ZDAyZmM5NDUyMjA3NzdjIiwidXNlcl9pZCI6Mn0.A1IsVXN-tfUuQmE_I_Wns8NZZqMlcIhzxBP6FPheo1Y
+Content-Type: application/json
+
+{
+    "note": 5
+}
+###
+POST http://localhost:8000/api/photos/4/votes/
+Content-Type: application/json
+
+{
+    "note" : 4
+}

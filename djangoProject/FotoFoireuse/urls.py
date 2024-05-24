@@ -9,5 +9,5 @@ router.register(r'photos', PhotosViewSet)
 router.register(r'commentaires', CommentairesViewSet)
 router.register(r'votes', VotesViewSet)
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', include(router.urls))
 ]

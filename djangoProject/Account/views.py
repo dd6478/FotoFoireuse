@@ -27,7 +27,44 @@ class UserViewSet(viewsets.ModelViewSet):
             return [AllowAny()]
         return super().get_permissions()
 
+    def retrieve(self, request, *args, **kwargs):
+        userObj = self.get_object()
+        user = request.user
+        if user.is_superuser or user == userObj:
+            return super().retrieve(request, *args, **kwargs)
+        else:
+            return Response({'error': "You're not allowed to do that"}, status=403)
 
+    def update(self, request, *args, **kwargs):
+        userObj = self.get_object()
+        user = request.user
+        if user.is_superuser or user == userObj:
+            return super().update(request, *args, **kwargs)
+        else:
+            return Response({'error': "You're not allowed to do that"}, status=403)
+
+    def partial_update(self, request, *args, **kwargs):
+        userObj = self.get_object()
+        user = request.user
+        if user.is_superuser or user == userObj:
+            return super().partial_update(request, *args, **kwargs)
+        else:
+            return Response({'error': "You're not allowed to do that"}, status=403)
+
+    def destroy(self, request, *args, **kwargs):
+        userObj = self.get_object()
+        user = request.user
+        if user.is_superuser or user == userObj:
+            return super().destroy(request, *args, **kwargs)
+        else:
+            return Response({'error': "You're not allowed to do that"}, status=403)
+
+    def list(self, request, *args, **kwargs):
+        user = request.user
+        if user.is_superuser:
+            return super().list(request, *args, **kwargs)
+        else:
+            return Response({'error': "You're not allowed to do that"}, status=403)
 
     @action(detail=False, methods=['post'])
     def register(self, request):

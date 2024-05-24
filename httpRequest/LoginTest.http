@@ -7,7 +7,7 @@ content-type: application/json
 
 {
     "username": "dd64",
-    "password": "dev",
+    "password": "jeTest",
     "email": "dd64@dev.fr"
 }
 
@@ -17,7 +17,7 @@ content-type: application/json
 
 {
     "username": "dd64",
-    "password": "dev"
+    "password": "jeTest"
 }
 
 ### refresh token
@@ -33,5 +33,5 @@ GET http://localhost:8000/api/user/test/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0ODU5ODQ2LCJpYXQiOjE3MTQ4NTk1NDYsImp0aSI6ImMxZTdiNDk0M2NmZDRhMGY5YWUzZmJhMzk0YzE3ODBkIiwidXNlcl9pZCI6MX0.LVcBISVQLFmUJszeDqvVcuUMK-W4AI1RY6uaj9hamwc
 
 ###
-GET http://localhost:8000/api/user/test/
-Authorization: Barear eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0ODYwNTYxLCJpYXQiOjE3MTQ4NjAyNjEsImp0aSI6IjlhMjJkZmYxZTJkYTRlNmU5YjE1NGQyMDViNDFiMWM3IiwidXNlcl9pZCI6MX0.AqnTM5Pixiqc0SjSsL2tIKM0FSqRJQaAKEkiLMmBshE
+GET http://localhost:8000/api/user/2/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2NTM5MDAyLCJpYXQiOjE3MTY1Mzg3MDIsImp0aSI6Ijg3YjkwOTg4ZjFmNDQ2MjE4N2JhMDlhY2QxNTM5ODRjIiwidXNlcl9pZCI6Mn0.R7Y1osTjfU1u71QgRPmmIYG7efnszbUhwQWmHirM5pg

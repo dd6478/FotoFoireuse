@@ -16,6 +16,10 @@ class PhotosSerializer(serializers.ModelSerializer):
         fields = ['user', 'title', 'description', 'ID', 'image', 'concours']
         read_only_fields = ['user', 'ID', 'concours', 'image']
 
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['image'] = instance.image.name
+        return rep
 
 class CommentairesSerializer(serializers.ModelSerializer):
     user = serializers.CharField(
