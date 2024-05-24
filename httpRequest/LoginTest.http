@@ -2,13 +2,16 @@
 GET http://localhost:8000/api/
 
 ### register
-POST http://localhost:8000/api/user/register/
+POST http://localhost/api/user/register/
 content-type: application/json
 
 {
     "username": "dd64",
     "password": "jeTest",
-    "email": "dd64@dev.fr"
+    "email": "dd64@dev.fr",
+    "first_name": "dd",
+      "last_name": "dd",
+    "sexe": "M"
 }
 
 ### login

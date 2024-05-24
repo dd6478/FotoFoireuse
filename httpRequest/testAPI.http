@@ -60,8 +60,8 @@ content-type: application/json
 }
 
 ###
-GET http://localhost:8000/api/votes/2/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2NTM4NjUyLCJpYXQiOjE3MTY1MzgzNTIsImp0aSI6ImU5MzBhOWM3MmI3ZDQyMTk5ZDAyZmM5NDUyMjA3NzdjIiwidXNlcl9pZCI6Mn0.A1IsVXN-tfUuQmE_I_Wns8NZZqMlcIhzxBP6FPheo1Y
+GET http://localhost:8000/api/photos/2/download/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2NTQ1MjIyLCJpYXQiOjE3MTY1NDQ5MjIsImp0aSI6IjAzYWJmNjMwNjZjNjQ5M2Q4ODc4NzE1MjNhNzRjOThiIiwidXNlcl9pZCI6NX0.7NvMy1GzFlNRROVg6ITUfcZ0bMFaXNYcy6nYeCIU-Kk
 Content-Type: application/json
 
 {

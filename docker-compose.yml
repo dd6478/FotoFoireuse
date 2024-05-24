@@ -11,7 +11,7 @@ services:
     ports:
       - "5432:5432"
 
-  web:
+  back:
     working_dir: /djangoProject
     build:
       context: djangoProject
@@ -32,3 +32,12 @@ services:
     environment:
       DATABASE_URL: postgres://USER:TEST@db/foto_foireuse_db
       PYTHONPATH: /djangoProject:$PYTHONPATH
+
+  reverse-proxy:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - back
