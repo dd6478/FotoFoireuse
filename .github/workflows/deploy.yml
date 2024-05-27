@@ -43,6 +43,10 @@ jobs:
           ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/Fotofoireuse && git pull"
         shell: bash
 
+      - name: Down docker-compose and remove images
+        run: |
+          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/Fotofoireuse && docker-compose down"
+
       - name: Cleanup
         run: rm private_key.pem
         shell: bash
