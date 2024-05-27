@@ -43,9 +43,13 @@ jobs:
           ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/Fotofoireuse && git pull"
         shell: bash
 
-      - name: restart
+      - name: docker-compose down
         run: |
-          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/Fotofoireuse && docker-compose restart"
+          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/Fotofoireuse && docker-compose down"
+
+      - name: docker-compose down
+        run: |
+          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/Fotofoireuse && docker-compose -p fotofoireuse up -d"
 
       - name: Cleanup
         run: rm private_key.pem
