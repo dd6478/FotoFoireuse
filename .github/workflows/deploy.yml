@@ -49,7 +49,7 @@ jobs:
 
       - name: Up docker-compose
         run: |
-          ssh -i private_key.pem -o StrictHostKeyChecking=no user@remote_host "cd /home/dd64/Fotofoireuse && docker-compose -p fotofoireuse up -d --no-cache"
+          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/Fotofoireuse && docker-compose -p fotofoireuse up -d --no-cache"
 
       - name: Cleanup
         run: rm private_key.pem
