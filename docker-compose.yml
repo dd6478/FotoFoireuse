@@ -7,6 +7,8 @@ services:
       POSTGRES_PASSWORD: TEST
     ports:
       - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
 
   back:
     working_dir: /djangoProject
