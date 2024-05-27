@@ -1,8 +1,6 @@
 services:
   db:
     image: postgres:latest
-    #volumes:
-    #  - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       POSTGRES_DB: foto_foireuse_db
       POSTGRES_USER: USER
@@ -15,12 +13,11 @@ services:
     build:
       context: djangoProject
       dockerfile: Dockerfile
+      args:
+        - BUILD_DATE=${BUILD_DATE}
     volumes:
       - ./djangoProject:/djangoProject
     command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
-    #command: python manage.py runserver 0.0.0.0:8000
-    #volumes:
-      #- .:/FotoFoireuseDjango
     ports:
       - "8000:8000"
     depends_on:
