@@ -1,8 +1,12 @@
 name: deployment
+
 on:
-    push:
-        branches:
-        - master
+  pull_request:
+    types:
+      - closed
+    branches:
+      - master
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -12,11 +16,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Create SSH key file
-        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
-        shell: bash
-
-      - name: Set permissions for SSH key
-        run: chmod 600 private_key.pem
+        run: |
+          echo "${{ secrets.DEPLOYMENT_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
         shell: bash
 
       - name: Add SSH key and configure SSH
@@ -25,9 +27,20 @@ jobs:
           ssh-keyscan -H dd64.fr >> ~/.ssh/known_hosts
         shell: bash
 
+      - name: Debug SSH key content
+        run: |
+          echo "Private key contents:"
+          cat private_key.pem
+        shell: bash
+
+      - name: Debug SSH connection
+        run: |
+          ssh -i private_key.pem -o StrictHostKeyChecking=no -v dd64@dd64.fr "echo Connection successful"
+        shell: bash
+
       - name: Deploy to Server
         run: |
-          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /path/to/your/application && git pull"
+          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/Fotofoireuse && git pull"
         shell: bash
 
       - name: Cleanup
