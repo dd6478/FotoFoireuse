@@ -40,7 +40,7 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /path/to/your/application && git pull"
+          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/Fotofoireuse && git pull"
         shell: bash
 
       - name: Cleanup
