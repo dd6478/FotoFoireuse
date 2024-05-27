@@ -8,15 +8,13 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - /var/lib/postgresql/data:/home/dd64/Fotofoireuse/db_data
 
   back:
     working_dir: /djangoProject
     build:
       context: djangoProject
       dockerfile: Dockerfile
-      args:
-        - BUILD_DATE=${BUILD_DATE}
     volumes:
       - ./djangoProject:/djangoProject
     command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
