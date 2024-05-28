@@ -1,0 +1,14 @@
+.titre{
+    font-size: 25px;
+    font-family: 'Viking';
+}
+
+p{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+@font-face {
+    font-family: 'Viking';
+    src: url(../../assets/fonts/PR\ Viking\ Alternates.ttf) format('.ttf');
+}

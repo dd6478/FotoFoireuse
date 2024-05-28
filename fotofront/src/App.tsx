@@ -11,7 +11,7 @@ function App() {
       <NavBar />
       <Routes>
         <Route path="/images" element={<Gallery />} />
-        <Route path="/connexion" element={<FotoLogin />} />
+        <Route path="/" element={<FotoLogin />} />
         <Route path="/inscription" element={<FotoForm />} />
       </Routes>
     </Router>
