@@ -49,16 +49,16 @@ jobs:
 
       - name: docker rmi for web
         run: |
-          IMAGE_ID=$(ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "docker images -q fotofoireuse-web --force")
+          IMAGE_ID=$(ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "docker images -q fotofoireuse-web")
           if [ -n "$IMAGE_ID" ]; then
-            ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "docker rmi $IMAGE_ID"
+            ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "docker rmi $IMAGE_ID --force"
           fi
 
       - name: docker rmi for back
         run: |
-          IMAGE_ID=$(ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "docker images -q fotofoireuse-back --force")
+          IMAGE_ID=$(ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "docker images -q fotofoireuse-back")
           if [ -n "$IMAGE_ID" ]; then
-            ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "docker rmi $IMAGE_ID"
+            ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "docker rmi $IMAGE_ID --force"
           fi
 
       - name: docker-compose up
