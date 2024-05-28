@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import userService, { User } from "../../services/user-service";
 import axios, { CanceledError } from "axios";
 import { useState } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const schema = z
   .object({
@@ -35,9 +37,15 @@ type FormData = z.infer<typeof schema>;
 
 const FotoForm = () => {
   const [erreur, setErreur] = useState("");
+  const navigate = useNavigate();
 
   const onSubmit = (data: FieldValues) => {
-    userService.add(data).catch((err) => setErreur(err.message));
+    userService
+      .add(data)
+      .then((res) => {
+        navigate("/");
+      })
+      .catch((err) => setErreur(err.message));
   };
 
   const {
@@ -57,7 +65,10 @@ const FotoForm = () => {
       }}
     >
       <div className="mb-3">
-        <label htmlFor="nom"> Nom d'utilisateur </label>
+        <label htmlFor="nom" style={{ color: "white" }}>
+          {" "}
+          Nom d'utilisateur{" "}
+        </label>
         <input
           {...register("username")}
           id="username"
@@ -68,7 +79,10 @@ const FotoForm = () => {
           <p className="text-danger">{errors.username.message}</p>
         )}
 
-        <label htmlFor="first-name"> Nom </label>
+        <label htmlFor="first-name" style={{ color: "white" }}>
+          {" "}
+          Nom{" "}
+        </label>
         <input
           {...register("first_name")}
           id="name"
@@ -79,7 +93,10 @@ const FotoForm = () => {
           <p className="text-danger">{errors.first_name.message}</p>
         )}
 
-        <label htmlFor="last_name"> Prénom </label>
+        <label htmlFor="last_name" style={{ color: "white" }}>
+          {" "}
+          Prénom{" "}
+        </label>
         <input
           {...register("last_name")}
           id="prenom"
@@ -90,13 +107,19 @@ const FotoForm = () => {
           <p className="text-danger">{errors.last_name.message}</p>
         )}
 
-        <label htmlFor="sexe"> Sexe : </label>
+        <label htmlFor="sexe" style={{ color: "white" }}>
+          {" "}
+          Sexe{" "}
+        </label>
         <select {...register("sexe")} name="sexe" className="form-control">
           <option value="H">Homme</option>
           <option value="F">Femme</option>
         </select>
 
-        <label htmlFor="mail"> Mail </label>
+        <label htmlFor="mail" style={{ color: "white" }}>
+          {" "}
+          Mail{" "}
+        </label>
         <input
           {...register("email")}
           id="mail"
@@ -105,7 +128,10 @@ const FotoForm = () => {
         ></input>
         {errors.email && <p className="text-danger">{errors.email.message}</p>}
 
-        <label htmlFor="password"> Mot de passe </label>
+        <label htmlFor="password" style={{ color: "white" }}>
+          {" "}
+          Mot de passe{" "}
+        </label>
         <input
           {...register("password")}
           id="password"
@@ -116,7 +142,10 @@ const FotoForm = () => {
           <p className="text-danger">{errors.password.message}</p>
         )}
 
-        <label htmlFor="confirmPassword"> Confirmer le mot de passe </label>
+        <label htmlFor="confirmPassword" style={{ color: "white" }}>
+          {" "}
+          Confirmer le mot de passe{" "}
+        </label>
         <input
           {...register("confirmPassword")}
           id="confirmPassword"
@@ -126,6 +155,7 @@ const FotoForm = () => {
         {errors.confirmPassword && (
           <p className="text-danger">{errors.confirmPassword.message}</p>
         )}
+        <br />
         <button disabled={!isValid} className="form-control">
           Valider
         </button>
