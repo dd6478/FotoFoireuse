@@ -1,6 +1,7 @@
 .titre{
-    font-size: 25px;
+    font-size: 40px;
     font-family: 'Viking';
+    color: white;
 }
 
 p{
@@ -10,5 +11,5 @@ p{
 
 @font-face {
     font-family: 'Viking';
-    src: url(../../assets/fonts/PR\ Viking\ Alternates.ttf) format('.ttf');
+    src: url(../../assets/fonts/PRViking.ttf) format('truetype');
 }

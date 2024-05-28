@@ -12,7 +12,7 @@ const NavBar = () => {
       width="100%"
       align="center"
       justifyContent="center"
-      boxShadow="0px 2px 6px rgba(0, 0, 0, 0.1)"
+      boxShadow="0px 3px 6px rgba(255, 255, 255, 0.2)"
       marginBottom="10px"
     >
       {/* <Button colorScheme="blue" onClick={() => navigate("/connexion")}>
@@ -27,6 +27,8 @@ const NavBar = () => {
         aria-label="Search database"
         icon={<ChevronLeftIcon />}
         background="white"
+        width="50px"
+        height="50px"
       />
       <Text className="titre" flex="1" width="80%" textAlign="center">
         {" "}
@@ -35,7 +37,7 @@ const NavBar = () => {
       <img
         src="/viking.ico"
         alt="Icone"
-        style={{ width: "24px", height: "24px", marginRight: "8px" }}
+        style={{ width: "50px", height: "50px", marginRight: "8px" }}
       />
     </HStack>
   );

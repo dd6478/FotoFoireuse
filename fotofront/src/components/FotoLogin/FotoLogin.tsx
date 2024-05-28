@@ -3,7 +3,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import userService from "../../services/user-service";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import React from "react";
+import { color } from "framer-motion";
 
 const schema = z.object({
   username: z
@@ -49,7 +51,11 @@ const FotoForm = () => {
       }}
     >
       <div className="mb-3">
-        <label htmlFor="mail"> Nom d'utilisateur </label>
+        <br />
+        <label htmlFor="mail" style={{ color: "white" }}>
+          {" "}
+          Nom d'utilisateur{" "}
+        </label>
         <input
           {...register("username")}
           id="mail"
@@ -60,7 +66,10 @@ const FotoForm = () => {
           <p className="text-danger">{errors.username.message}</p>
         )}
 
-        <label htmlFor="password"> Mot de passe </label>
+        <label htmlFor="password" style={{ color: "white" }}>
+          {" "}
+          Mot de passe{" "}
+        </label>
         <input
           {...register("password")}
           id="password"
@@ -71,6 +80,15 @@ const FotoForm = () => {
           <p className="text-danger">{errors.password.message}</p>
         )}
 
+        <Link
+          to="/inscription"
+          style={{ color: "white", textDecoration: "underline" }}
+        >
+          {" "}
+          Pas encore inscrit ?
+        </Link>
+
+        <br />
         <button disabled={!isValid} className="form-control">
           Valider
         </button>
