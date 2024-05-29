@@ -43,6 +43,7 @@ const FotoForm = () => {
     userService
       .add(data)
       .then((res) => {
+        alert("Bienvenu dans la drakar vinking " + data["username"] + " !");
         navigate("/");
       })
       .catch((err) => setErreur(err.message));

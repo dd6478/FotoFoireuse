@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NavBar from "./components/navBar/NavBar";
 import FotoForm from "./components/FotoForms/FotoForm";
 import React from "react";
+import Publication from "./components/Publication/Publication";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/images" element={<Gallery />} />
         <Route path="/" element={<FotoLogin />} />
         <Route path="/inscription" element={<FotoForm />} />
+        <Route path="/publication" element={<Publication />} />
       </Routes>
     </Router>
   );
