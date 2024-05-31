@@ -9,13 +9,36 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import FileUploadButton from "./FileUploadButton";
+import { FieldValues, useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const schema = z.object({
+  files: z.string().array().max(10, "Maximum 10 photos"),
+  description: z.string(),
+});
+type FormData = z.infer<typeof schema>;
 
 const Publication: React.FC = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<FormData>({ resolver: zodResolver(schema) });
+
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const handleFilesSelected = (files: FileList) => {
     setSelectedFiles(Array.from(files));
-    console.log(Array.from(files));
+  };
+
+  const onSubmit = () => {
+    const descriptionInput = document.getElementById("description");
+    if (descriptionInput instanceof HTMLTextAreaElement) {
+      const descriptionValue = descriptionInput.value;
+      console.log(descriptionValue);
+      // plus qu'a se munir du tableau de fichier, le map et les envoyer un par un avec la description (faut decrypter le token ??? )
+    }
   };
 
   return (
@@ -56,9 +79,12 @@ const Publication: React.FC = () => {
           <Textarea
             placeholder="Entrez votre description ici"
             maxLength={300}
+            id="description"
           />
           <FormHelperText>Maximum 300 caractères</FormHelperText>
-          <Button> Publier </Button>
+          <Button type="submit" onClick={onSubmit}>
+            Publier
+          </Button>
         </FormControl>
       </Box>
     </Flex>

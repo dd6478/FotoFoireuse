@@ -1,16 +1,17 @@
 import { IconButton, HStack, Text, background } from "@chakra-ui/react";
 import { ChevronLeftIcon } from "@chakra-ui/icons";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./NavBar.css";
 
 const NavBar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const [isVisible, setIsVisible] = useState(false);
+  const isVisible = location.pathname === "/inscription";
 
-  const toggleVisibility = () => {
-    setIsVisible(!isVisible);
+  const handleOnClick = () => {
+    if ((location.pathname = "/inscription")) navigate("/");
   };
 
   return (
@@ -21,14 +22,6 @@ const NavBar = () => {
       boxShadow="0px 3px 6px rgba(255, 255, 255, 0.2)"
       marginBottom="10px"
     >
-      {/* <Button colorScheme="blue" onClick={() => navigate("/connexion")}>
-        {" "}
-        Se connecter{" "}
-      </Button>
-      <Button colorScheme="blue" onClick={() => navigate("/inscription")}>
-        {" "}
-        S'inscrire{" "}
-      </Button> */}
       <IconButton
         aria-label="Search database"
         icon={<ChevronLeftIcon />}
@@ -36,6 +29,7 @@ const NavBar = () => {
         width="50px"
         height="50px"
         visibility={isVisible ? "visible" : "hidden"}
+        onClick={handleOnClick}
       />
       <Text className="titre" flex="1" width="80%" textAlign="center">
         {" "}
