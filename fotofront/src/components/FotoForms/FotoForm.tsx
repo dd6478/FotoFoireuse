@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const schema = z
   .object({
-    username: z.string().min(5, {
+    username: z.string().min(3, {
       message: "Le nom de viking doit avoir au moins cinq charactères.",
     }),
     last_name: z
@@ -40,6 +40,8 @@ const FotoForm = () => {
   const navigate = useNavigate();
 
   const onSubmit = (data: FieldValues) => {
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
     userService
       .add(data)
       .then((res) => {
@@ -65,7 +67,7 @@ const FotoForm = () => {
         alignItems: "center",
       }}
     >
-      <div className="mb-3">
+      <div className="mb-3" style={{ width: "301px" }}>
         <label htmlFor="nom" style={{ color: "white" }}>
           {" "}
           Nom d'utilisateur{" "}
@@ -157,10 +159,10 @@ const FotoForm = () => {
           <p className="text-danger">{errors.confirmPassword.message}</p>
         )}
         <br />
-        <button disabled={!isValid} className="form-control">
-          Valider
-        </button>
-        <p>{erreur}</p>
+        <button className="form-control">Valider</button>
+        <p style={{ color: "white" }}>
+          {erreur && "Ce nom d'utilisateur ou cet email existe déjà"}
+        </p>
       </div>
     </form>
   );

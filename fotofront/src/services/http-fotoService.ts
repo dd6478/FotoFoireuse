@@ -8,7 +8,11 @@ class HttpService {
   }
 
   liste() {
-      return apiClient.get(this.endpoint);
+      return apiClient.get(this.endpoint + "/concours/1/photos/");
+  }
+
+  uploadPublication(){
+    return apiClient.post(this.endpoint + "/concours/1/photos/")
   }
   
 }
