@@ -8,4 +8,4 @@ export interface Foto {
     concours: number;
 }
 
-export default foto('photos/')
+export default foto('concours/')
