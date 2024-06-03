@@ -15,7 +15,7 @@ apiClient.interceptors.request.use((config) => {
       if (decodedToken && decodedToken.exp) {
         if (decodedToken.exp < currentTime) {
           try {
-            const newAccessToken = refreshAccessToken(localStorage.getItem('refresh')); // si il n'y a pas de token refresh ?
+            const newAccessToken =    refreshAccessToken(localStorage.getItem('refresh')); // si il n'y a pas de token refresh ?
             config.headers.Authorization = `Bearer ${newAccessToken}`;
           } catch (error) {
             console.error('Erreur lors du renouvellement du token d\'accès :', error);
@@ -31,11 +31,12 @@ apiClient.interceptors.request.use((config) => {
 
 
 function refreshAccessToken(refreshToken:String | null) {
-    axios
-    .post("http://dd64.fr/api/token/refresh/", refreshToken)
-    .then((res)=>{
-      const newAccessToken = res.data.access
+  axios
+  .post("http://dd64.fr/api/token/refresh/", { refresh: refreshToken })
+  .then((res) => {
+    const newAccessToken = res.data.access;
       localStorage.setItem('access', newAccessToken); 
+      console.log("j'ai un nv access token " + newAccessToken?"oui":"non")
       return newAccessToken
     })
     .catch((err)=> { 

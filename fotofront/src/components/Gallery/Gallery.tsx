@@ -2,43 +2,54 @@ import React, { useEffect, useState } from "react";
 import { IconButton, Flex, Box } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
-import apiClient from "../../services/api-client";
+import concoursService from "../../services/concours-service";
 import fotoService from "../../services/foto-service";
 
-interface fileItem {
+interface FileItem {
   title: string;
   description: string;
-  id: number;
+  ID: number;
   image: string;
   concours: number;
 }
 
 const Gallery = () => {
   const navigate = useNavigate();
-  const [files, setFiles] = useState<fileItem[]>([]);
+  const [files, setFiles] = useState<FileItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fotoService
-      .liste()
-      .then((res) => {
-        setFiles(res.data);
-        res.data.forEach((file) => {
-          fotoService
-            .download(file.id)
-            .then((res) => {
-              const blob = new Blob([res.data], { type: "image/png" });
+    const fetchFilesAndImages = async () => {
+      try {
+        const res = await concoursService.liste();
+        const filesWithImages = await Promise.all(
+          res.data.map(async (file) => {
+            try {
+              const image = await fotoService.download(file.ID);
+              const contentType = image.headers["content-type"];
+              const blob = new Blob([image.data], { type: contentType });
               const url = URL.createObjectURL(blob);
-              setFiles((prevImages) =>
-                prevImages.map((item) =>
-                  item.id === file.id ? { ...item, image: url } : item
-                )
-              );
-            })
-            .catch((err) => console.log(err));
-        });
-      })
-      .catch((err) => console.log("erreur sur le chargement des images"));
+              return { ...file, image: url };
+            } catch (err) {
+              console.error(err);
+              return { ...file, image: "" }; // Or handle the error appropriately
+            }
+          })
+        );
+        setFiles(filesWithImages);
+      } catch (err) {
+        console.error("Error loading files and images", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFilesAndImages();
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; // Or a spinner, etc.
+  }
 
   return (
     <>
@@ -54,7 +65,7 @@ const Gallery = () => {
             marginBottom="2"
           >
             <img
-              src={file.image} // Assurez-vous que 'file.url' correspond à l'URL de votre image // photo/titreimage.png
+              src={file.image} // `http://dd64.fr/api/photos/${file.ID}/download/`
               alt={`Selected file ${index + 1}`}
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
             />
