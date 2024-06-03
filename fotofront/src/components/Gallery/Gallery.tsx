@@ -4,6 +4,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../../services/api-client";
 import fotoService from "../../services/foto-service";
+import {jwtDecode} from "jwt-decode";
 
 interface fileItem {
   title: string;
@@ -38,7 +39,7 @@ const Gallery = () => {
         });
       })
       .catch((err) => console.log("erreur sur le chargement des images"));
-  }, []);
+  }, [navigate]);
 
   return (
     <>
