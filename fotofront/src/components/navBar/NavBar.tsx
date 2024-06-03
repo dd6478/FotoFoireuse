@@ -1,11 +1,17 @@
 import { IconButton, HStack, Text, background } from "@chakra-ui/react";
 import { ChevronLeftIcon } from "@chakra-ui/icons";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./NavBar.css";
 
 const NavBar = () => {
   const navigate = useNavigate();
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggleVisibility = () => {
+    setIsVisible(!isVisible);
+  };
 
   return (
     <HStack
@@ -29,6 +35,7 @@ const NavBar = () => {
         background="white"
         width="50px"
         height="50px"
+        visibility={isVisible ? "visible" : "hidden"}
       />
       <Text className="titre" flex="1" width="80%" textAlign="center">
         {" "}

@@ -10,7 +10,7 @@ import { color } from "framer-motion";
 const schema = z.object({
   username: z
     .string()
-    .min(5, { message: "Veuillez entrer un nom d'utilisateur valide." }),
+    .min(3, { message: "Veuillez entrer un nom d'utilisateur valide." }),
   password: z.string().min(6, {
     message: "Le mot de passe doit avoir au moins six caractères.",
   }),
@@ -23,12 +23,13 @@ const FotoForm = () => {
   const [erreur, setErreur] = useState("");
 
   const onSubmit = (data: FieldValues) => {
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
     userService
       .connect(data)
       .then((res) => {
         localStorage.setItem("refresh", res.data.refresh);
         localStorage.setItem("access", res.data.access);
-        console.log(res.data.access);
         navigate("/images");
       })
       .catch((err) => setErreur(err.message));
@@ -61,6 +62,7 @@ const FotoForm = () => {
           id="mail"
           type="mail"
           className="form-control"
+          style={{ width: "301px" }}
         ></input>
         {errors.username && (
           <p className="text-danger">{errors.username.message}</p>
@@ -75,6 +77,7 @@ const FotoForm = () => {
           id="password"
           type="password"
           className="form-control"
+          style={{ width: "301px" }}
         ></input>
         {errors.password && (
           <p className="text-danger">{errors.password.message}</p>
@@ -89,9 +92,7 @@ const FotoForm = () => {
         </Link>
 
         <br />
-        <button disabled={!isValid} className="form-control">
-          Valider
-        </button>
+        <button className="form-control">Valider</button>
         {erreur && (
           <p className="text-danger">
             Mot de passe ou nom d'utilisateur invalide

@@ -42,7 +42,7 @@ const FileUploadButton: React.FC<FileUploadButtonProps> = ({
         onChange={handleFileChange}
       />
       <Button colorScheme="teal" onClick={handleButtonClick}>
-        Select Photos
+        Sélectionner vos photos
       </Button>
     </Box>
   );
