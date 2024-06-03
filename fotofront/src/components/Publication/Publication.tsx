@@ -12,6 +12,12 @@ import FileUploadButton from "./FileUploadButton";
 import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import fotoService from "../../services/foto-service";
+import { jwtDecode } from "jwt-decode";
+
+interface JwtPayload {
+  user_id: string;
+}
 
 const schema = z.object({
   files: z.string().array().max(10, "Maximum 10 photos"),
@@ -36,8 +42,35 @@ const Publication: React.FC = () => {
     const descriptionInput = document.getElementById("description");
     if (descriptionInput instanceof HTMLTextAreaElement) {
       const descriptionValue = descriptionInput.value;
-      console.log(descriptionValue);
-      // plus qu'a se munir du tableau de fichier, le map et les envoyer un par un avec la description (faut decrypter le token ??? )
+
+      const token = localStorage.getItem("access");
+      if (token) {
+        var userID = jwtDecode<JwtPayload>(token);
+      }
+
+      selectedFiles.map((item) => {
+        fetch(URL.createObjectURL(item))
+          .then((response) => response.blob())
+          .then((blob) => {
+            const formData = new FormData();
+            formData.append("image", blob, item.name);
+            formData.append("title", item.name);
+            if (descriptionValue) {
+              formData.append("description", descriptionValue);
+            }
+            formData.append("concours", "1");
+            formData.append("id", userID.user_id);
+
+            fotoService
+              .uploadPublication(formData)
+              .then((res) => console.log(res))
+              .catch((err) =>
+                console.log(
+                  "la requete n'est pas passée, avertire l'utilisateur"
+                )
+              );
+          });
+      });
     }
   };
 
@@ -49,9 +82,9 @@ const Publication: React.FC = () => {
         </Box>
         {selectedFiles.length > 0 && (
           <Box
-            overflowX="auto" // Only horizontal scroll
-            maxWidth="100vw" // Limit the width to viewport width
-            whiteSpace="nowrap" // Prevent images from wrapping
+            overflowX="auto"
+            maxWidth="100vw"
+            whiteSpace="nowrap"
             padding="2"
           >
             {selectedFiles.map((file, index) => (
@@ -60,7 +93,7 @@ const Publication: React.FC = () => {
                 width="100px"
                 height="100px"
                 overflow="hidden"
-                display="inline-block" // Keep images in a row
+                display="inline-block"
                 borderRadius="md"
                 marginRight="2"
                 marginBottom="2"

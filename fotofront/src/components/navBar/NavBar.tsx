@@ -8,10 +8,13 @@ const NavBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isVisible = location.pathname === "/inscription";
+  const isVisible =
+    location.pathname === "/inscription" ||
+    location.pathname === "/publication";
 
   const handleOnClick = () => {
     if ((location.pathname = "/inscription")) navigate("/");
+    if ((location.pathname = "/publication")) navigate("/images");
   };
 
   return (

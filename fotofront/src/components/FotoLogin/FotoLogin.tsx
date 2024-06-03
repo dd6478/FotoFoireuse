@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 import { color } from "framer-motion";
+import { jwtDecode } from "jwt-decode";
 
 const schema = z.object({
   username: z
