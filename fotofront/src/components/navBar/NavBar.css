@@ -1,0 +1,15 @@
+.titre{
+    font-size: 40px;
+    font-family: 'Viking';
+    color: white;
+}
+
+p{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+@font-face {
+    font-family: 'Viking';
+    src: url(../../assets/fonts/PRViking.ttf) format('truetype');
+}
