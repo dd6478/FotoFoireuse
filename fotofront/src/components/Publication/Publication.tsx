@@ -14,6 +14,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import fotoService from "../../services/foto-service";
 import { jwtDecode } from "jwt-decode";
+import concoursService from "../../services/concours-service";
 
 interface JwtPayload {
   user_id: string;
@@ -61,7 +62,7 @@ const Publication: React.FC = () => {
             formData.append("concours", "1");
             formData.append("id", userID.user_id);
 
-            fotoService
+            concoursService
               .uploadPublication(formData)
               .then((res) => console.log(res))
               .catch((err) =>
