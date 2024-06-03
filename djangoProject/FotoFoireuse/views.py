@@ -15,6 +15,8 @@ from .models import Concours, Photos, Commentaires, Vote
 from .serializers import ConcoursSerializer, PhotosSerializer, CommentairesSerializer, VoteSerializer
 from django.conf import settings
 
+from Account.models import User
+
 
 class SecuModelViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
@@ -72,6 +74,13 @@ class PhotosViewSet(SecuModelViewSet):
     @swagger_auto_schema(auto_schema=None)
     def create(self, request, *args, **kwargs):
         raise MethodNotAllowed('POST')
+
+    @action(detail=False, methods=['get'], url_path='user/(?P<user_id>[0-9]+)')
+    def user_photos(self, request, user_id=None):
+        user = get_object_or_404(User, pk=user_id)
+        photos = Photos.objects.filter(user=user)
+        serializer = PhotosSerializer(photos, many=True, context={'request': request})
+        return Response(serializer.data)
 
     @action(detail=True, methods=['get'])
     def download(self, request, pk=None):
