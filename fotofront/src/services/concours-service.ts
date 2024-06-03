@@ -1,4 +1,4 @@
-import foto from "./http-fotoService";
+import concours from "./http-concoursService";
 
 export interface Foto {
     title: string;
@@ -8,4 +8,4 @@ export interface Foto {
     concours: number;
 }
 
-export default foto('photos/')
+export default concours('concours/')
