@@ -1,10 +1,11 @@
 from django.urls import path, include
 from rest_framework import routers
-from .views import ConcoursViewSet, PhotosViewSet, CommentairesViewSet, VotesViewSet
+from .views import ConcoursViewSet, PhotosViewSet, CommentairesViewSet, VotesViewSet, PublicationViewSet
 
 app_name = 'FotoFoireuse'
 router = routers.SimpleRouter()
 router.register(r'concours', ConcoursViewSet)
+router.register(r'publications', PublicationViewSet)
 router.register(r'photos', PhotosViewSet)
 router.register(r'commentaires', CommentairesViewSet)
 router.register(r'votes', VotesViewSet)
