@@ -45,7 +45,7 @@ jobs:
 
       - name: docker-compose stop
         run: |
-          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/fotofoireuse && docker-compose stop"
+          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/fotofoireuse && docker compose stop"
 
       - name: docker rmi for web
         run: |
@@ -63,7 +63,7 @@ jobs:
 
       - name: docker-compose up
         run: |
-          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/fotofoireuse && docker-compose -p fotofoireuse up -d"
+          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/fotofoireuse && docker compose -p fotofoireuse up -d"
 
       - name: Cleanup
         run: rm private_key.pem
