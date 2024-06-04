@@ -26,7 +26,7 @@ const FileUploadButton: React.FC<FileUploadButtonProps> = ({
       toast({
         title: `${files.length} file(s) selected.`,
         status: "success",
-        duration: 2000,
+        duration: 3000,
         isClosable: true,
       });
     }

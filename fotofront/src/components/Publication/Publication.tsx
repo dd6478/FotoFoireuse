@@ -7,6 +7,7 @@ import {
   FormHelperText,
   FormLabel,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
 import FileUploadButton from "./FileUploadButton";
 import { FieldValues, useForm } from "react-hook-form";
@@ -27,6 +28,8 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const Publication: React.FC = () => {
+  const toast = useToast();
+
   const {
     register,
     handleSubmit,
@@ -64,7 +67,14 @@ const Publication: React.FC = () => {
 
             concoursService
               .uploadPublication(formData)
-              .then((res) => console.log(res))
+              .then((res) => {
+                toast({
+                  title: `La publication est en ligne.`,
+                  status: "success",
+                  duration: 3000,
+                  isClosable: true,
+                });
+              })
               .catch((err) =>
                 console.log(
                   "la requete n'est pas passée, avertire l'utilisateur"
