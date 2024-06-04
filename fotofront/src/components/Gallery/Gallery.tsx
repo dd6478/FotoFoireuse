@@ -4,6 +4,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import concoursService from "../../services/concours-service";
 import fotoService from "../../services/foto-service";
+import {jwtDecode} from "jwt-decode";
 
 interface FileItem {
   title: string;

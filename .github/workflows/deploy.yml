@@ -40,8 +40,30 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/Fotofoireuse && git pull"
+          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/fotofoireuse && git pull"
         shell: bash
+
+      - name: docker-compose stop
+        run: |
+          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/fotofoireuse && docker compose stop"
+
+      - name: docker rmi for web
+        run: |
+          IMAGE_ID=$(ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "docker images -q fotofoireuse-web")
+          if [ -n "$IMAGE_ID" ]; then
+            ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "docker rmi $IMAGE_ID --force"
+          fi
+
+      - name: docker rmi for back
+        run: |
+          IMAGE_ID=$(ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "docker images -q fotofoireuse-back")
+          if [ -n "$IMAGE_ID" ]; then
+            ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "docker rmi $IMAGE_ID --force"
+          fi
+
+      - name: docker-compose up
+        run: |
+          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/fotofoireuse && docker compose -p fotofoireuse up -d"
 
       - name: Cleanup
         run: rm private_key.pem

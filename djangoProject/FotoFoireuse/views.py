@@ -1,7 +1,8 @@
+import mimetypes
 import os
 
 from django.db import IntegrityError
-from django.http import FileResponse
+from django.http import FileResponse, Http404
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.exceptions import MethodNotAllowed
@@ -14,6 +15,8 @@ from rest_framework.response import Response
 from .models import Concours, Photos, Commentaires, Vote
 from .serializers import ConcoursSerializer, PhotosSerializer, CommentairesSerializer, VoteSerializer
 from django.conf import settings
+
+from Account.models import User
 
 
 class SecuModelViewSet(viewsets.ModelViewSet):
@@ -73,11 +76,25 @@ class PhotosViewSet(SecuModelViewSet):
     def create(self, request, *args, **kwargs):
         raise MethodNotAllowed('POST')
 
+    @action(detail=False, methods=['get'], url_path='user/(?P<user_id>[0-9]+)')
+    def user_photos(self, request, user_id=None):
+        user = get_object_or_404(User, pk=user_id)
+        photos = Photos.objects.filter(user=user)
+        serializer = PhotosSerializer(photos, many=True, context={'request': request})
+        return Response(serializer.data)
+
     @action(detail=True, methods=['get'])
     def download(self, request, pk=None):
         photo = get_object_or_404(Photos, pk=pk)
-        mediaPath = os.path.join(settings.MEDIA_ROOT, photo.image.name)
-        return FileResponse(open(mediaPath, 'rb'))
+        media_path = os.path.join(settings.MEDIA_ROOT, photo.image.name)
+
+        if os.path.exists(media_path):
+            mime_type, _ = mimetypes.guess_type(media_path)
+            if mime_type is None:
+                mime_type = 'application/octet-stream'
+            return FileResponse(open(media_path, 'rb'), content_type=mime_type)
+        else:
+            raise Http404("Image not found")
 
     @action(detail=True, methods=['get', 'post'])
     def commentaires(self, request, pk=None):

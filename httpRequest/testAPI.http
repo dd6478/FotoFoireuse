@@ -51,17 +51,17 @@ Content-Type: application/json
     "note": 5
 }
 ###
-POST http://localhost:8000/api/user/login/
+POST http://dd64.fr/api/user/login/
 content-type: application/json
 
 {
-    "username": "testApi",
-    "password": "testAPI"
+    "username": "dorian",
+    "password": "dorian"
 }
 
 ###
-GET http://localhost:8000/api/photos/2/download/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2NTQ1MjIyLCJpYXQiOjE3MTY1NDQ5MjIsImp0aSI6IjAzYWJmNjMwNjZjNjQ5M2Q4ODc4NzE1MjNhNzRjOThiIiwidXNlcl9pZCI6NX0.7NvMy1GzFlNRROVg6ITUfcZ0bMFaXNYcy6nYeCIU-Kk
+GET http://dd64.fr/api/photos/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE3Mzk5NjcyLCJpYXQiOjE3MTczOTkzNzIsImp0aSI6IjgwYjhjN2VkZWEyMzQwMjBhZWNhYTM0NDc0ZjY3MWY5IiwidXNlcl9pZCI6MTN9.c9IBGB79igjhMq2HYxGaqhQqKf8PB5z-LA9PEl0SwjU
 Content-Type: application/json
 
 {
