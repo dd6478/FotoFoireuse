@@ -12,8 +12,8 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Concours, Photos, Commentaires, Vote
-from .serializers import ConcoursSerializer, PhotosSerializer, CommentairesSerializer, VoteSerializer
+from .models import Concours, Photos, Commentaires, Vote, Publication
+from .serializers import ConcoursSerializer, PublicationSerializer, PhotosSerializer, CommentairesSerializer, VoteSerializer
 from django.conf import settings
 
 from Account.models import User
@@ -65,6 +65,18 @@ class ConcoursViewSet(SecuModelViewSet):
             photos = Photos.objects.filter(concours=concours)
             serializer = PhotosSerializer(photos, many=True, context={'request': request})
             return Response(serializer.data)
+
+
+class PublicationViewSet(SecuModelViewSet):
+    queryset = Publication.objects.all()
+    serializer_class = PublicationSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    @swagger_auto_schema(auto_schema=None)
+    def create(self, request, *args, **kwargs):
+        raise MethodNotAllowed('POST')
+
+
 
 
 class PhotosViewSet(SecuModelViewSet):

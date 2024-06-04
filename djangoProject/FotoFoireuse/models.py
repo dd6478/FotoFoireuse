@@ -7,17 +7,23 @@ class Photos(models.Model):
     user = models.ForeignKey('Account.User', on_delete=models.CASCADE)
     concours = models.ForeignKey('Concours', on_delete=models.CASCADE, related_name='photos')
     image = models.ImageField(upload_to='photos/')
+    publication = models.ForeignKey('Publication', on_delete=models.CASCADE)
+
+class Publication(models.Model):
+    ID = models.AutoField(primary_key=True)
+    user = models.ForeignKey('Account.User', on_delete=models.CASCADE)
+    concours = models.ForeignKey('Concours', on_delete=models.CASCADE, related_name='photos')
+    first_photo = models.ForeignKey('Photos', on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     description = models.TextField()
 
     def __str__(self):
         return self.title
 
-
 class Commentaires(models.Model):
     ID = models.AutoField(primary_key=True)
     user = models.ForeignKey('Account.User', on_delete=models.CASCADE)
-    photo = models.ForeignKey('Photos', on_delete=models.CASCADE)
+    publication = models.ForeignKey('Publication', on_delete=models.CASCADE)
     texte = models.TextField()
     ajoutsDate = models.DateTimeField(auto_now_add=True)
 
@@ -28,14 +34,14 @@ class Commentaires(models.Model):
 class Vote(models.Model):
     ID = models.AutoField(primary_key=True)
     user = models.ForeignKey('Account.User', on_delete=models.CASCADE)
-    photo = models.ForeignKey('Photos', on_delete=models.CASCADE)
+    publication = models.ForeignKey('Publication', on_delete=models.CASCADE)
     note = models.IntegerField(validators=[
         MaxValueValidator(5),
         MinValueValidator(0)
     ])
 
     class Meta:
-        unique_together = ('user', 'photo')
+        unique_together = ('user', 'publication')
 
     def __str__(self):
         return self.ID
