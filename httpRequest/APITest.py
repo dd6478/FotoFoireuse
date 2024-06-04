@@ -72,25 +72,59 @@ class FotofoireuseAPI:
         else:
             return False
 
-    def addPhoto(self, title, tk):
-        url = f"{self.base_url}/concours/1/photos/"
+    def addPublications(self, title, tk):
+        url = f"{self.base_url}/concours/1/publications/"
         Authorization = f"Bearer {tk}"
         data = {
             "title": title,
+            'description': 'desc1'
         }
+        response = requests.post(url, data=data, headers={"Authorization": Authorization})
+        if response.status_code == 201:
+            return True
+        else:
+            return False
+
+    def addPhotos(self, tk):
+        url = f"{self.base_url}/publications/1/photos/"
+        Authorization = f"Bearer {tk}"
         with open("photos/cyp.png", "rb") as img_file:
             files = {
                 "image": ("cyp.png", img_file, "image/png")
             }
-            response = requests.post(url, data=data, files=files, headers={"Authorization": Authorization})
+            response = requests.post(url, files=files, headers={"Authorization": Authorization})
         if response.status_code == 201:
             return True
         else:
             print(response.content)  # print the response content if the status code is not 201
             return False
 
+    def addComment(self, text, tk):
+        url = f"{self.base_url}/publications/1/commentaires/"
+        Authorization = f"Bearer {tk}"
+        data = {
+            "texte": text
+        }
+        response = requests.post(url, data=data, headers={"Authorization": Authorization})
+        if response.status_code == 201:
+            return True
+        else:
+            return False
 
-loginAPI = LoginAPI("http://dd64.fr/api")
+    def addVote(self, note, tk):
+        url = f"{self.base_url}/publications/1/votes/"
+        Authorization = f"Bearer {tk}"
+        data = {
+            "note": note
+        }
+        response = requests.post(url, data=data, headers={"Authorization": Authorization})
+        if response.status_code == 201:
+            return True
+        else:
+            print(response.content)  # print the response content if the status code is not 201
+            return False
+
+loginAPI = LoginAPI("http://localhost/api")
 print(loginAPI.register("testApi", "testAPI", "test@API.fr", "name", "last", "M"))
 print(loginAPI.login("testApi", "testAPI"))
 token = loginAPI.accessToken
@@ -98,8 +132,10 @@ print(loginAPI.refresh())
 if token != loginAPI.accessToken:
     print(True)
 
-fotofoireuseAPI = FotofoireuseAPI("http://dd64.fr/api")
+fotofoireuseAPI = FotofoireuseAPI("http://localhost/api")
 if int(input("1: init, 2: continue")) == 1:
     print(fotofoireuseAPI.addConcours("concours1", "desc1", "2022-01-01", "2022-01-02", loginAPI.accessToken))
-    print(fotofoireuseAPI.addPhoto("photo1", loginAPI.accessToken))
-    print(fotofoireuseAPI.addPhoto("photo2", loginAPI.accessToken))
+    print(fotofoireuseAPI.addPublications("publi1", loginAPI.accessToken))
+    print(fotofoireuseAPI.addPhotos(loginAPI.accessToken))
+    print(fotofoireuseAPI.addComment("comment1", loginAPI.accessToken))
+    print(fotofoireuseAPI.addVote(5, loginAPI.accessToken))
