@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { IconButton, Flex, Box } from "@chakra-ui/react";
+import { IconButton, Flex, Box, Container } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import concoursService from "../../services/concours-service";
@@ -27,12 +27,13 @@ const Gallery = () => {
             try {
               const image = await fotoService.download(file.ID);
               const contentType = image.headers["content-type"];
-              const blob = new Blob([image.data], { type: contentType });
-              const url = URL.createObjectURL(blob);
+              const url = URL.createObjectURL(
+                new Blob([image.data], { type: contentType })
+              );
               return { ...file, image: url };
             } catch (err) {
               console.error(err);
-              return { ...file, image: "" }; // Or handle the error appropriately
+              return { ...file, image: "" };
             }
           })
         );
@@ -53,25 +54,27 @@ const Gallery = () => {
 
   return (
     <>
-      <Flex flexWrap="wrap">
-        {files.map((file, index) => (
-          <Box
-            key={index}
-            width="100px"
-            height="100px"
-            overflow="hidden"
-            borderRadius="md"
-            marginRight="2"
-            marginBottom="2"
-          >
-            <img
-              src={file.image} // `http://dd64.fr/api/photos/${file.ID}/download/`
-              alt={`Selected file ${index + 1}`}
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            />
-          </Box>
-        ))}
-      </Flex>
+      <Container maxW="container.lg" mt={4} centerContent>
+        <Flex flexWrap="wrap" justifyContent="center">
+          {files.map((file, index) => (
+            <Box
+              key={index}
+              // flexBasis="calc(33.333% - 10px)"
+              margin="5px"
+              overflow="hidden"
+              borderRadius="md"
+              height="200px"
+              width="200px"
+            >
+              <img
+                src={file.image}
+                alt={`Selected file ${index + 1}`}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
+            </Box>
+          ))}
+        </Flex>
+      </Container>
       <IconButton
         icon={<AddIcon color={"black"} />}
         aria-label="Add"

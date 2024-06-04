@@ -1,32 +1,36 @@
-import React from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import { Button } from "@chakra-ui/react";
+import fotoService from "../services/foto-service";
 
 const RefreshTokenButton = () => {
-  const handleRefreshToken = () => {
-    const refreshToken = localStorage.getItem("refresh");
+  const [imageURL, setImageURL] = useState("");
 
-    if (!refreshToken) {
-      console.error("No refresh token available");
-      return;
+  const handleRefreshToken = async () => {
+    try {
+      const res = await fotoService.download(6);
+      const uint = new Uint8Array(res.data);
+      const string = String.fromCharCode(...uint);
+      const base64String = btoa(string);
+      setImageURL(`data:image/jpg;base64,${base64String}`);
+    } catch (error) {
+      console.error("Error downloading image:", error);
     }
+  };
 
-    axios
-      .post("http://dd64.fr/api/token/refresh/", { refresh: refreshToken })
-      .then((res) => {
-        const newAccessToken = res.data.access;
-        localStorage.setItem("access", newAccessToken);
-        console.log("New access token:", newAccessToken);
-      })
-      .catch((err) => {
-        console.error("Error refreshing token:", err);
-      });
+  const bon = (imageurl: string) => {
+    console.log(imageurl);
   };
 
   return (
-    <Button onClick={handleRefreshToken} colorScheme="teal">
-      Refresh Token
-    </Button>
+    <>
+      <Button onClick={handleRefreshToken} colorScheme="teal">
+        Refresh Token
+      </Button>
+      {imageURL && <img src={imageURL} alt="download" />}
+      <Button onClick={() => bon(imageURL)} colorScheme="teal">
+        url ou ?
+      </Button>
+    </>
   );
 };
 
