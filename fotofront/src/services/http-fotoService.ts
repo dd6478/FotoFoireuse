@@ -8,7 +8,8 @@ class HttpService {
   }
 
   download(id:number){
-    return apiClient.get(this.endpoint + id +"/download/")
+    return apiClient.get(this.endpoint + id +"/download/",{
+      responseType: 'blob'})
   }
   
 }

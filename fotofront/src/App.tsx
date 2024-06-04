@@ -5,9 +5,11 @@ import NavBar from "./components/navBar/NavBar";
 import FotoForm from "./components/FotoForms/FotoForm";
 import React from "react";
 import Publication from "./components/Publication/Publication";
+import RefreshTokenButton from "./components/Test";
 import Test from "./components/Test";
 import FotoIndex from "./components/FotoIndex/FotoIndex";
 import ImageComponent from "./components/photo";
+
 
 function App() {
   return (
@@ -19,8 +21,8 @@ function App() {
         <Route path="/connexion" element={<FotoLogin />} />
         <Route path="/inscription" element={<FotoForm />} />
         <Route path="/publication" element={<Publication />} />
-        <Route path="/test" element={<Test />} />
         <Route path={"/testeu"} element={<ImageComponent />} />
+        <Route path="/test" element={<RefreshTokenButton />} />
       </Routes>
     </Router>
   );
