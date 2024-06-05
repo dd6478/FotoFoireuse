@@ -28,6 +28,12 @@ const NavBar = () => {
   const location = useLocation();
   const [username, setUsername] = useState("");
 
+  const logout = () => {
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
+    navigate("/");
+  }
+
   const isLogged = () => {
     return !(!localStorage.getItem("refresh") || jwtDecode(localStorage.getItem("refresh")).exp < Math.floor(Date.now() / 1000));
   }
@@ -100,7 +106,7 @@ const NavBar = () => {
               <MenuButton as={Button} rightIcon={<Avatar name={username} src='' />} background={"transparent"} _hover={{ bg: 'transparent' }} _focus={{ bg: 'transparent' }} _expanded={{ bg: 'transparent' }}>
               </MenuButton>
               <MenuList>
-                <MenuItem>Logout</MenuItem>
+                <MenuItem onClick={logout}>Logout</MenuItem>
               </MenuList>
             </Menu>
         ) : (
