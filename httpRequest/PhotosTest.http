@@ -1,21 +1,26 @@
 ### login
-POST http://localhost:8000/api/user/login/
+POST http://dd64.fr/api/user/login/
 content-type: application/json
 
 {
     "username": "dd64",
-    "password": "jeTest"
+    "password": "dorian"
 }
 
 ###
-GET http://localhost/api/publications/1/photos/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE3NTIyMjMyLCJpYXQiOjE3MTc1MjE5MzIsImp0aSI6ImQ2YWE4YzdkZTJiYzQ3YjNhZjVjYTcxNTQyYWU1NGZmIiwidXNlcl9pZCI6MX0.AjnwOoEY9mXMEjyReAkN0f3tip5ywI1gYVbCTUqbSXE
+GET http://dd64.fr/api/photos/20/download/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE3NTk3NDE4LCJpYXQiOjE3MTc1OTcxMTgsImp0aSI6IjM0NDhhOWJhYmEzODQwMzJhMjI4ODQ3MTcxYjA4ZTQ1IiwidXNlcl9pZCI6M30.guIgaSZ421Yj7q30UfZ5ymbOK3t5N41V7s0F0AEu-3E
 content-type: application/json
 
 {
   "title": "test",
     "description": "test"
 }
+
+###
+GET http://dd64.fr/api/photos/8/download/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE3NTk0NzY2LCJpYXQiOjE3MTc1OTQ0NjYsImp0aSI6ImUzYTBjYTJkMmU4ZjQ5MWM4YTM5NGZmNmI0MTY5NTdjIiwidXNlcl9pZCI6M30.7eT29aYDYZ7uttAA3Pv5Fo71J4wuT8FABxb1yhoZIxg
+content-type: application/json
 
 
 ### test

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "@chakra-ui/react";
-import publicationsService from "../../src/services/publication/publication-service";
+import publicationsService from "../services/foto/publication-service";
 import concoursService from "../services/concours/concours-service";
 
 const RefreshTokenButton = () => {
