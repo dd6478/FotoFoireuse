@@ -4,12 +4,11 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NavBar from "./components/navBar/NavBar";
 import FotoForm from "./components/FotoForms/FotoForm";
 import React from "react";
-import Publication from "./components/Publication/Publication";
 import RefreshTokenButton from "./components/Test";
 import Test from "./components/Test";
 import FotoIndex from "./components/FotoIndex/FotoIndex";
-import ImageComponent from "./components/photo";
-
+import PublicationAffichage from "./components/Publication/PublicationAffichage";
+import Publication from "./components/PublicationUpload/Publication";
 
 function App() {
   return (
@@ -21,8 +20,11 @@ function App() {
         <Route path="/connexion" element={<FotoLogin />} />
         <Route path="/inscription" element={<FotoForm />} />
         <Route path="/publication" element={<Publication />} />
-        <Route path={"/testeu"} element={<ImageComponent />} />
         <Route path="/test" element={<RefreshTokenButton />} />
+        <Route
+          path="/publication/:idPublication"
+          element={<PublicationAffichage />}
+        />
       </Routes>
     </Router>
   );

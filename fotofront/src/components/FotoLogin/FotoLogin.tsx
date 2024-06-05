@@ -1,7 +1,7 @@
 import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import userService from "../../services/user-service";
+import userService from "../../services/user/user-service";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import React from "react";

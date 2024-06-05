@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import { Button } from "@chakra-ui/react";
-import fotoService from "../services/foto-service";
+import publicationsService from "../../src/services/publication/publication-service";
+import concoursService from "../services/concours/concours-service";
 
 const RefreshTokenButton = () => {
   const [imageURL, setImageURL] = useState("");
 
   const handleRefreshToken = async () => {
-    try {
-      const res = await fotoService.download(6);
-      const uint = new Uint8Array(res.data);
-      const string = String.fromCharCode(...uint);
-      const base64String = btoa(string);
-      setImageURL(`data:image/jpg;base64,${base64String}`);
-    } catch (error) {
-      console.error("Error downloading image:", error);
-    }
+    const formData = new FormData();
+    formData.append("title", "321321");
+    formData.append("description", "je suis la description");
+
+    console.log(concoursService.uploadPublication(formData));
   };
 
   const bon = (imageurl: string) => {
@@ -24,11 +21,7 @@ const RefreshTokenButton = () => {
   return (
     <>
       <Button onClick={handleRefreshToken} colorScheme="teal">
-        Refresh Token
-      </Button>
-      {imageURL && <img src={imageURL} alt="download" />}
-      <Button onClick={() => bon(imageURL)} colorScheme="teal">
-        url ou ?
+        Requete
       </Button>
     </>
   );

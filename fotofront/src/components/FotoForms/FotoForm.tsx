@@ -1,7 +1,7 @@
 import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import userService, { User } from "../../services/user-service";
+import userService, { User } from "../../services/user/user-service";
 import axios, { CanceledError } from "axios";
 import { useState } from "react";
 import React from "react";

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { IconButton, Flex, Box, Container } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
-import concoursService from "../../services/concours-service";
-import fotoService from "../../services/foto-service";
-import {jwtDecode} from "jwt-decode";
+import concoursService from "../../services/concours/concours-service";
+import fotoService from "../../services/foto/foto-service";
+import { jwtDecode } from "jwt-decode";
 
 interface FileItem {
   title: string;
@@ -60,12 +60,14 @@ const Gallery = () => {
           {files.map((file, index) => (
             <Box
               key={index}
-              // flexBasis="calc(33.333% - 10px)"
               margin="5px"
               overflow="hidden"
               borderRadius="md"
               height="200px"
               width="200px"
+              onClick={() => {
+                navigate(`/publication/${file.ID}`);
+              }}
             >
               <img
                 src={file.image}
