@@ -4,16 +4,17 @@ content-type: application/json
 
 {
     "username": "dd64",
-    "password": "dev"
+    "password": "jeTest"
 }
 
 ###
-GET http://localhost:8000/api/concours/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2MzAzNjU0LCJpYXQiOjE3MTYzMDMzNTQsImp0aSI6ImQyZmMxYTg2Yzg0OTRlYTFhMTBjNmIyMWY3N2Q5YjFlIiwidXNlcl9pZCI6MX0.SmGoinLDDPreXidye4R06cgh1Dwh71BgDlyrENruN6c
+GET http://localhost/api/publications/1/photos/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE3NTIyMjMyLCJpYXQiOjE3MTc1MjE5MzIsImp0aSI6ImQ2YWE4YzdkZTJiYzQ3YjNhZjVjYTcxNTQyYWU1NGZmIiwidXNlcl9pZCI6MX0.AjnwOoEY9mXMEjyReAkN0f3tip5ywI1gYVbCTUqbSXE
 content-type: application/json
 
 {
-  "texte": "teettt"
+  "title": "test",
+    "description": "test"
 }
 
 

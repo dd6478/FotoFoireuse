@@ -1,8 +1,12 @@
 name: deployment
+
 on:
-    push:
-        branches:
-        - master
+  pull_request:
+    types:
+      - closed
+    branches:
+      - master
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -12,11 +16,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Create SSH key file
-        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
-        shell: bash
-
-      - name: Set permissions for SSH key
-        run: chmod 600 private_key.pem
+        run: |
+          echo "${{ secrets.DEPLOYMENT_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
         shell: bash
 
       - name: Add SSH key and configure SSH
@@ -25,10 +27,43 @@ jobs:
           ssh-keyscan -H dd64.fr >> ~/.ssh/known_hosts
         shell: bash
 
+      - name: Debug SSH key content
+        run: |
+          echo "Private key contents:"
+          cat private_key.pem
+        shell: bash
+
+      - name: Debug SSH connection
+        run: |
+          ssh -i private_key.pem -o StrictHostKeyChecking=no -v dd64@dd64.fr "echo Connection successful"
+        shell: bash
+
       - name: Deploy to Server
         run: |
-          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /path/to/your/application && git pull"
+          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/fotofoireuse && git pull"
         shell: bash
+
+      - name: docker-compose stop
+        run: |
+          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/fotofoireuse && docker compose stop"
+
+      - name: docker rmi for web
+        run: |
+          IMAGE_ID=$(ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "docker images -q fotofoireuse-web")
+          if [ -n "$IMAGE_ID" ]; then
+            ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "docker rmi $IMAGE_ID --force"
+          fi
+
+      - name: docker rmi for back
+        run: |
+          IMAGE_ID=$(ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "docker images -q fotofoireuse-back")
+          if [ -n "$IMAGE_ID" ]; then
+            ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "docker rmi $IMAGE_ID --force"
+          fi
+
+      - name: docker-compose up
+        run: |
+          ssh -i private_key.pem -o StrictHostKeyChecking=no dd64@dd64.fr "cd /home/dd64/fotofoireuse && docker compose -p fotofoireuse up -d"
 
       - name: Cleanup
         run: rm private_key.pem
