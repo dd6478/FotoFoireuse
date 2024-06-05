@@ -113,12 +113,14 @@ const NavBar = () => {
               <MenuButton as={Button} rightIcon={<Avatar name={username} src='' />} background={"transparent"} _hover={{ bg: 'transparent' }} _focus={{ bg: 'transparent' }} _expanded={{ bg: 'transparent' }}>
               </MenuButton>
               <MenuList>
+                <MenuItem onClick={() => navigate("/images")}>Images</MenuItem>
+                <MenuItem onClick={() => navigate("/profil")}>Profil</MenuItem>
                 <MenuItem onClick={logout}>Logout</MenuItem>
               </MenuList>
             </Menu>
         ) : (
             <Button onClick={() => navigate("/connexion")}>Connexion</Button>
-         )}
+        )}
       </HStack>
   );
 };

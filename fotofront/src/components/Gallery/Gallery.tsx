@@ -3,7 +3,7 @@ import { IconButton, Flex, Box, Container } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import concoursService from "../../services/concours/concours-service";
-import fotoService from "../../services/foto/foto-service";
+import publicationService from "../../services/foto/publication-service";
 import { jwtDecode } from "jwt-decode";
 
 interface FileItem {
@@ -26,7 +26,7 @@ const Gallery = () => {
         const filesWithImages = await Promise.all(
           res.data.map(async (file) => {
             try {
-              const image = await fotoService.download(file.ID);
+              const image = await publicationService.download(file.ID);
               const contentType = image.headers["content-type"];
               const url = URL.createObjectURL(
                 new Blob([image.data], { type: contentType })

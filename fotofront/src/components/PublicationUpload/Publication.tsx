@@ -17,7 +17,7 @@ import fotoService from "../../services/foto/foto-service";
 import { jwtDecode } from "jwt-decode";
 import concoursService from "../../services/concours/concours-service";
 import { useNavigate } from "react-router-dom";
-import publicationService from "../../services/publication/publication-service";
+import publicationService from "../../services/foto/publication-service";
 interface JwtPayload {
   user_id: string;
 }
