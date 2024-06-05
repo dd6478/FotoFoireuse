@@ -13,10 +13,11 @@ import FileUploadButton from "./FileUploadButton";
 import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import fotoService from "../../services/foto-service";
+import fotoService from "../../services/foto/foto-service";
 import { jwtDecode } from "jwt-decode";
-import concoursService from "../../services/concours-service";
-
+import concoursService from "../../services/concours/concours-service";
+import { useNavigate } from "react-router-dom";
+import publicationService from "../../services/publication/publication-service";
 interface JwtPayload {
   user_id: string;
 }
@@ -29,6 +30,7 @@ type FormData = z.infer<typeof schema>;
 
 const Publication: React.FC = () => {
   const toast = useToast();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -52,36 +54,49 @@ const Publication: React.FC = () => {
         var userID = jwtDecode<JwtPayload>(token);
       }
 
-      selectedFiles.map((item) => {
-        fetch(URL.createObjectURL(item))
-          .then((response) => response.blob())
-          .then((blob) => {
-            const formData = new FormData();
-            formData.append("image", blob, item.name);
-            formData.append("title", item.name);
-            if (descriptionValue) {
-              formData.append("description", descriptionValue);
-            }
-            formData.append("concours", "1");
-            formData.append("id", userID.user_id);
+      const formData = new FormData();
+      formData.append("title", "321321");
+      formData.append("description", descriptionValue);
 
-            concoursService
-              .uploadPublication(formData)
-              .then((res) => {
-                toast({
-                  title: `La publication est en ligne.`,
-                  status: "success",
-                  duration: 3000,
-                  isClosable: true,
-                });
-              })
-              .catch((err) =>
-                console.log(
-                  "la requete n'est pas passée, avertire l'utilisateur"
-                )
-              );
+      concoursService
+        .uploadPublication(formData)
+        .then((res) => {
+          const idPubli = res.data.ID;
+          selectedFiles.map((item) => {
+            fetch(URL.createObjectURL(item))
+              .then((response) => response.blob())
+              .then((blob) => {
+                const formData = new FormData();
+                formData.append("image", blob, item.name); // comment il sait que c'est la data  de l'image ?
+                formData.append("title", item.name);
+                if (descriptionValue) {
+                  formData.append("description", descriptionValue);
+                }
+                formData.append("concours", "1");
+                formData.append("id", userID.user_id);
+
+                publicationService
+                  .uploadPublicationImage(formData, idPubli)
+                  .then((res) => {
+                    toast({
+                      title: `La publication est en ligne.`,
+                      status: "success",
+                      duration: 3000,
+                      isClosable: true,
+                    });
+                    navigate("/images");
+                  })
+                  .catch((err) =>
+                    console.log(
+                      "la requete n'est pas passée, avertire l'utilisateur"
+                    )
+                  );
+              });
           });
-      });
+        })
+        .catch((err) => {
+          console.log("la publication n'est pas passé " + err);
+        });
     }
   };
 

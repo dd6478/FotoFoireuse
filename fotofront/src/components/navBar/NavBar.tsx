@@ -8,22 +8,21 @@ import {
   Button,
   Avatar,
   MenuList,
-  MenuItem
+  MenuItem,
 } from "@chakra-ui/react";
 import { ChevronLeftIcon } from "@chakra-ui/icons";
 import React, { useState, useEffect } from "react";
-import userService from "../../services/user-service";
+import userService from "../../services/user/user-service";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./NavBar.css";
-import {jwtDecode} from "jwt-decode";
-import {set} from "zod";
+import { jwtDecode } from "jwt-decode";
+import { set } from "zod";
 
 interface JwtPayload {
   user_id: string;
 }
 
 const NavBar = () => {
-
   const navigate = useNavigate();
   const location = useLocation();
   const [username, setUsername] = useState("");
@@ -35,10 +34,14 @@ const NavBar = () => {
   }
 
   const isLogged = () => {
-    return !(!localStorage.getItem("refresh") || jwtDecode(localStorage.getItem("refresh")).exp < Math.floor(Date.now() / 1000));
-  }
+    return !(
+      !localStorage.getItem("refresh") ||
+      jwtDecode(localStorage.getItem("refresh")).exp <
+        Math.floor(Date.now() / 1000)
+    );
+  };
 
-  const getUser = async () : Promise<string> => {
+  const getUser = async (): Promise<string> => {
     var userID = jwtDecode<JwtPayload>(localStorage.getItem("refresh"));
     try {
       const res = await userService.getUserName(userID.user_id);
@@ -46,27 +49,31 @@ const NavBar = () => {
     } catch (error) {
       return "none";
     }
-  }
-
-  useEffect(() => {
-  const fetchUser = async () => {
-    if (isLogged()) {
-      const userID = jwtDecode<JwtPayload>(localStorage.getItem("refresh"));
-      try {
-        const res = await userService.getUserName(userID.user_id);
-        setUsername(res.data.username);
-      } catch (error) {
-        console.error(error);
-      }
-    }
   };
 
-  fetchUser();
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (isLogged()) {
+        const userID = jwtDecode<JwtPayload>(localStorage.getItem("refresh"));
+        try {
+          const res = await userService.getUserName(userID.user_id);
+          setUsername(res.data.username);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    };
 
-  if (!isLogged() && location.pathname !== "/" && location.pathname !== "/inscription") {
-    navigate("/connexion");
-  }
-}, []);
+    fetchUser();
+
+    if (
+      !isLogged() &&
+      location.pathname !== "/" &&
+      location.pathname !== "/inscription"
+    ) {
+      navigate("/connexion");
+    }
+  }, []);
 
   const isVisible =
     location.pathname === "/inscription" ||
@@ -111,8 +118,7 @@ const NavBar = () => {
             </Menu>
         ) : (
             <Button onClick={() => navigate("/connexion")}>Connexion</Button>
-
-        )}
+         )}
       </HStack>
   );
 };
