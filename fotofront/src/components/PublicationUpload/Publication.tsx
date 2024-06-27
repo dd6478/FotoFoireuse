@@ -17,7 +17,8 @@ import fotoService from "../../services/foto/foto-service";
 import { jwtDecode } from "jwt-decode";
 import concoursService from "../../services/concours/concours-service";
 import { useNavigate } from "react-router-dom";
-import publicationService from "../../services/foto/publication-service";
+import publicationService from "../../services/publication/publication-service";
+
 interface JwtPayload {
   user_id: string;
 }
@@ -78,12 +79,6 @@ const Publication: React.FC = () => {
                 publicationService
                   .uploadPublicationImage(formData, idPubli)
                   .then((res) => {
-                    toast({
-                      title: `La publication est en ligne.`,
-                      status: "success",
-                      duration: 3000,
-                      isClosable: true,
-                    });
                     navigate("/images");
                   })
                   .catch((err) =>
@@ -97,6 +92,12 @@ const Publication: React.FC = () => {
         .catch((err) => {
           console.log("la publication n'est pas passé " + err);
         });
+      toast({
+        title: `La publication est en ligne.`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 

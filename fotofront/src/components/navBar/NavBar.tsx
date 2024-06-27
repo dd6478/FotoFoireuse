@@ -31,12 +31,12 @@ const NavBar = () => {
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
     navigate("/");
-  }
+  };
 
   const isLogged = () => {
     return !(
       !localStorage.getItem("refresh") ||
-      jwtDecode(localStorage.getItem("refresh")).exp <
+      jwtDecode(localStorage.getItem("refresh")).exp < // erreur ici si les token sont en undefined, il faut alors complétement les supprimer du stockage local
         Math.floor(Date.now() / 1000)
     );
   };
@@ -85,43 +85,51 @@ const NavBar = () => {
   };
 
   return (
-      <HStack
-          width="100%"
-          align="center"
-          justifyContent="center"
-          boxShadow="0px 3px 6px rgba(255, 255, 255, 0.2)"
-          marginBottom="10px"
-      >
-        <IconButton
-              aria-label="Home page"
-              icon={<img
-                  src="/viking.ico"
-                  alt="Icone"
-                  style={{width: "50px", height: "50px"}}
-              />}
-              width="50px"
-              height="50px"
-              background="transparent"
-              onClick={() => navigate("/")}
-        />
-        <Text className="titre" flex="1" width="80%" textAlign="center">
-          {" "}
-          FotoFoireuses{" "}
-        </Text>
-        {isLogged() ? (
-            <Menu>
-              <MenuButton as={Button} rightIcon={<Avatar name={username} src='' />} background={"transparent"} _hover={{ bg: 'transparent' }} _focus={{ bg: 'transparent' }} _expanded={{ bg: 'transparent' }}>
-              </MenuButton>
-              <MenuList>
-                <MenuItem onClick={() => navigate("/images")}>Images</MenuItem>
-                <MenuItem onClick={() => navigate("/profil")}>Profil</MenuItem>
-                <MenuItem onClick={logout}>Logout</MenuItem>
-              </MenuList>
-            </Menu>
-        ) : (
-            <Button onClick={() => navigate("/connexion")}>Connexion</Button>
-        )}
-      </HStack>
+    <HStack
+      width="100%"
+      align="center"
+      justifyContent="center"
+      boxShadow="0px 3px 6px rgba(255, 255, 255, 0.2)"
+      marginBottom="10px"
+    >
+      <IconButton
+        aria-label="Home page"
+        icon={
+          <img
+            src="/viking.ico"
+            alt="Icone"
+            style={{ width: "50px", height: "50px" }}
+          />
+        }
+        width="50px"
+        height="50px"
+        background="transparent"
+        onClick={() => navigate("/")}
+      />
+      <Text className="titre" flex="1" width="80%" textAlign="center">
+        {" "}
+        FotoFoireuses{" "}
+      </Text>
+      {isLogged() ? (
+        <Menu>
+          <MenuButton
+            as={Button}
+            rightIcon={<Avatar name={username} src="" />}
+            background={"transparent"}
+            _hover={{ bg: "transparent" }}
+            _focus={{ bg: "transparent" }}
+            _expanded={{ bg: "transparent" }}
+          ></MenuButton>
+          <MenuList>
+            <MenuItem onClick={() => navigate("/images")}>Images</MenuItem>
+            <MenuItem onClick={() => navigate("/profil")}>Profil</MenuItem>
+            <MenuItem onClick={logout}>Logout</MenuItem>
+          </MenuList>
+        </Menu>
+      ) : (
+        <Button onClick={() => navigate("/connexion")}>Connexion</Button>
+      )}
+    </HStack>
   );
 };
 

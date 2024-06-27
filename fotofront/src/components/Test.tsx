@@ -1,29 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@chakra-ui/react";
-import publicationsService from "../services/foto/publication-service";
 import concoursService from "../services/concours/concours-service";
+import publicationService from "../../src/services/publication/publication-service";
+import axios from "axios";
 
 const RefreshTokenButton = () => {
-  const [imageURL, setImageURL] = useState("");
-
-  const handleRefreshToken = async () => {
-    const formData = new FormData();
-    formData.append("title", "321321");
-    formData.append("description", "je suis la description");
-
-    console.log(concoursService.uploadPublication(formData));
-  };
-
-  const bon = (imageurl: string) => {
-    console.log(imageurl);
+  var log = "";
+  const test = async () => {
+    const response = await axios.post("http://dd64.fr/api/token/refresh/", {
+      // mettre l'url complet sinon boucle infini
+      refresh: localStorage.getItem("refresh"),
+    });
+    console.log(response);
   };
 
   return (
-    <>
-      <Button onClick={handleRefreshToken} colorScheme="teal">
-        Requete
-      </Button>
-    </>
+    <div>
+      <Button onClick={test}>Test Requete</Button>
+    </div>
   );
 };
 
