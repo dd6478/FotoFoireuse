@@ -49,11 +49,11 @@ const Gallery = () => {
     };
 
     const handleResize = () => {
-      setWindowSize(Math.floor((window.innerWidth - 24) / 3));
+      setWindowSize(Math.floor((window.innerWidth - 24) / 3)); // calcul pour la taille d'une image, sachant qu'il en faut 3 qui prennent le plus de place possible sur les petits ecrans
     };
 
     window.addEventListener("resize", handleResize);
-    handleResize();
+    handleResize(); // et on oublie pas d'appeller la fonction parce que à l'initialisation il n'y a pas encore la bonne taille de fenetre
     fetchFilesAndImages();
 
     // Nettoyage de l'écouteur d'événements lors du démontage du composant
