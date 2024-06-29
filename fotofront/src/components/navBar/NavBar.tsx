@@ -91,6 +91,9 @@ const NavBar = () => {
       justifyContent="center"
       boxShadow="0px 3px 6px rgba(255, 255, 255, 0.2)"
       marginBottom="10px"
+      position="fixed"
+      zIndex="docked"
+      bg="#31506d"
     >
       <IconButton
         aria-label="Home page"
