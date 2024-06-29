@@ -1,4 +1,4 @@
-import foto from "../foto/http-fotoService";
+import publications from "./http-publicationService";
 
 
-export default foto('publications/');
+export default publications('publications/');

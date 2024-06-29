@@ -17,7 +17,7 @@ class HttpService {
     return apiClient.post(this.endpoint + 'login/',data);
 }
 
-  getUserName(userId: string) {
+  getUserName(userId: number) {
     return apiClient.get(this.endpoint + userId + "/");
   }
   

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import concoursService from "../../services/concours/concours-service";
 import publicationService from "../../services/publication/publication-service";
 import { jwtDecode } from "jwt-decode";
+import fotoService from "../../services/foto/foto-service";
 
 interface FileItem {
   title: string;
@@ -28,7 +29,7 @@ const Gallery = () => {
         const filesWithImages = await Promise.all(
           res.data.map(async (file) => {
             try {
-              const image = await publicationService.download(file.ID);
+              const image = await fotoService.download(file.ID);
               const contentType = image.headers["content-type"];
               const url = URL.createObjectURL(
                 new Blob([image.data], { type: contentType })
