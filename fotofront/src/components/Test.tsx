@@ -7,13 +7,14 @@ import axios from "axios";
 const RefreshTokenButton = () => {
   var log = "";
   const test1 = async () => {
-    const response = await axios.get("http://dd64.fr/api/votes/1/", {
+    const response = await axios.get("http://dd64.fr/api/publications/1/", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("access")}`,
       },
     });
     console.log(response);
   };
+
   const test2 = async () => {
     const response = await axios.get(
       "http://dd64.fr/api/publications/4/votes/",
@@ -48,7 +49,7 @@ const RefreshTokenButton = () => {
 
   return (
     <div>
-      <Button onClick={test2}>Test Requete</Button>
+      <Button onClick={test1}>Test Requete</Button>
     </div>
   );
 };

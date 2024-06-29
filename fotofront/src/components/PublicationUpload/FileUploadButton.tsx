@@ -21,7 +21,8 @@ const FileUploadButton: React.FC<FileUploadButtonProps> = ({
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    if (files && files.length > 0) {
+    if (files && files.length > 0 && files.length < 11) {
+      // pour gerer les maximums de photos selectionnées
       onFilesSelected(files);
       toast({
         title: `${files.length} file(s) selected.`,
@@ -29,6 +30,22 @@ const FileUploadButton: React.FC<FileUploadButtonProps> = ({
         duration: 3000,
         isClosable: true,
       });
+    } else {
+      if (files && files.length > 11) {
+        toast({
+          title: `${files.length} fichiers séléctionnés, maximum 10.`,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: `Il a un problème avec la séléction de fichiers`,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
     }
   };
 

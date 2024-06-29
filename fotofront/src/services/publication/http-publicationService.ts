@@ -8,8 +8,8 @@ class HttpService {
     this.endpoint = endpoint;
   }
 
-  getPublication (id:number){
-    return apiClient.get(this.endpoint + '1/')
+  getPublication (id:string){
+    return apiClient.get(this.endpoint + id + "/")
   }
 
   getListePublication(){

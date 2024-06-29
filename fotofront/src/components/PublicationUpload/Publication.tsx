@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -40,20 +40,44 @@ const Publication: React.FC = () => {
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [userId, setUserId] = useState("");
+  const [dejaPublie, setdejaPublie] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("access");
+    var userID: JwtPayload = {
+      user_id: "",
+    };
+    if (token) {
+      userID = jwtDecode<JwtPayload>(token);
+      setUserId(userID.user_id);
+    }
+    publicationService.getPublication(userId).then(() => setdejaPublie(true));
+    // si la personne a déjà publié on charge ses photos et sa description (et son titre?) et y'aura qu a repatch si il y a des modifs.
+  }, []);
 
   const handleFilesSelected = (files: FileList) => {
-    setSelectedFiles(Array.from(files));
+    setSelectedFiles(Array.from(files)); // pour l'instant on laisse comme ca mais c'est ici qu'on pourra faire un ajout des photos au fur et a mesure (ce qui implique de mettre une croix pour supprimer la photo de la liste)
   };
 
   const onSubmit = () => {
+    const token = localStorage.getItem("access");
+
+    // verifier si l'utilisateur n'a pas déjà une publication
+    var userID: JwtPayload = {
+      user_id: "",
+    };
+    if (token) {
+      userID = jwtDecode<JwtPayload>(token);
+    }
+    var dejaPublie = false;
+    publicationService
+      .getPublication(userID.user_id)
+      .then(() => (dejaPublie = true)); // si la personne a déjà publié on charge ses photos et sa description (et son titre?) et y'aura qu a repatch si il y a des modifs.
+
     const descriptionInput = document.getElementById("description");
     if (descriptionInput instanceof HTMLTextAreaElement) {
       const descriptionValue = descriptionInput.value;
-
-      const token = localStorage.getItem("access");
-      if (token) {
-        var userID = jwtDecode<JwtPayload>(token);
-      }
 
       const formData = new FormData();
       formData.append("title", "321321");
@@ -104,7 +128,7 @@ const Publication: React.FC = () => {
   return (
     <Flex alignItems="center" justifyContent="center">
       <Box textAlign="center">
-        <Box marginRight="2" marginLeft="2">
+        <Box marginTop="10px" marginRight="2" marginLeft="2">
           <FileUploadButton onFilesSelected={handleFilesSelected} />
         </Box>
         {selectedFiles.length > 0 && (
@@ -135,13 +159,13 @@ const Publication: React.FC = () => {
           </Box>
         )}
         <FormControl isRequired>
-          <FormLabel>Rentrer la description</FormLabel>
+          <FormLabel color="white">Rentrer la description</FormLabel>
           <Textarea
             placeholder="Entrez votre description ici"
-            maxLength={300}
+            width="300px"
             id="description"
           />
-          <FormHelperText>Maximum 300 caractères</FormHelperText>
+          <FormHelperText color="white">Maximum 300 caractères</FormHelperText>
           <Button type="submit" onClick={onSubmit}>
             Publier
           </Button>
