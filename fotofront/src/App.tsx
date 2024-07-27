@@ -9,11 +9,13 @@ import Test from "./components/Test";
 import FotoIndex from "./components/FotoIndex/FotoIndex";
 import PublicationAffichage from "./components/Publication/PublicationAffichage";
 import Publication from "./components/PublicationUpload/Publication";
+import { Box } from "@chakra-ui/react";
 
 function App() {
   return (
     <Router>
       <NavBar />
+      <Box h="60px" bg="#31506d"></Box>
       <Routes>
         <Route path="/" element={<FotoIndex />} />
         <Route path="/images" element={<Gallery />} />

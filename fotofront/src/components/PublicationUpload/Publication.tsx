@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -9,6 +9,7 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
+import { CloseIcon } from "@chakra-ui/icons";
 import FileUploadButton from "./FileUploadButton";
 import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -17,7 +18,10 @@ import fotoService from "../../services/foto/foto-service";
 import { jwtDecode } from "jwt-decode";
 import concoursService from "../../services/concours/concours-service";
 import { useNavigate } from "react-router-dom";
-import publicationService from "../../services/foto/publication-service";
+import publicationService from "../../services/publication/publication-service";
+import axios from "axios";
+import foto from "../../services/foto/http-fotoService";
+
 interface JwtPayload {
   user_id: string;
 }
@@ -39,20 +43,79 @@ const Publication: React.FC = () => {
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [userId, setUserId] = useState("");
+  const [dejaPublie, setdejaPublie] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [publicationId, setPublicationId] = useState();
+
+  // Fonction pour télécharger une image en utilisant fotoService et la convertir en un objet File
+  const fetchImageAsFile = async (fileID, fileName) => {
+    const image = await fotoService.download(fileID);
+    const contentType = image.headers["content-type"];
+    const blob = new Blob([image.data], { type: contentType });
+    return new File([blob], fileName, { type: blob.type });
+  };
+
+  // Fonction pour créer un objet FileList à partir d'un tableau de fichiers
+  const createFileList = (files) => {
+    const dataTransfer = new DataTransfer();
+    files.forEach((file) => dataTransfer.items.add(file));
+    return dataTransfer.files;
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("access");
+    var userID: JwtPayload = {
+      user_id: "",
+    };
+    if (token) {
+      userID = jwtDecode<JwtPayload>(token);
+      setUserId(userID.user_id);
+    }
+    //publicationService.getPublication(userId).then((data) => {setdejaPublie(true);setPublicationId(data.) }); // ridicule ce que je viens de faire, je recupere la publi dont l'id est userId, pas la publie dont le userId est userId
+    // si la personne a déjà publié on charge ses photos et sa description (et son titre?) et y'aura qu a repatch si il y a des modifs.
+
+    const fetchImages = async () => {
+      //const filesToDownload = await publicationService.getPhotos(3); // obntenir une liste des id des photos d'une publi, mais comme ils ont tous une publi...
+      const filesToDownload = await fotoService.getToutesLesPhotosDuUser(
+        userID.user_id
+      );
+
+      setdejaPublie(filesToDownload.data.length > 0); // boolean qui sert a savoir si l'utilisateur a deja publie ou non
+
+      const files = await Promise.all(
+        // transformer les blobs en fichiers
+        filesToDownload.data.map((file) =>
+          fetchImageAsFile(file.ID, file.image)
+        )
+      );
+      const fileList = createFileList(files); // faire une liste de fichier
+      handleFilesSelected(fileList); // mettre ce tableau dans la variable locale
+    };
+
+    fetchImages();
+  }, []);
 
   const handleFilesSelected = (files: FileList) => {
     setSelectedFiles(Array.from(files));
   };
 
+  const handleRemoveFileAtIndex = (indexToRemove) => {
+    // pour supprimer avec la petite croix une photo
+    setSelectedFiles((prevFiles) =>
+      prevFiles.filter((_, index) => index !== indexToRemove)
+    );
+  };
+
   const onSubmit = () => {
+    if (dejaPublie) {
+      //publicationService.deletePublication(publicationId)
+      // supprimer la publicationpu
+      console.log("tu as deja publié");
+    }
     const descriptionInput = document.getElementById("description");
     if (descriptionInput instanceof HTMLTextAreaElement) {
       const descriptionValue = descriptionInput.value;
-
-      const token = localStorage.getItem("access");
-      if (token) {
-        var userID = jwtDecode<JwtPayload>(token);
-      }
 
       const formData = new FormData();
       formData.append("title", "321321");
@@ -67,23 +130,19 @@ const Publication: React.FC = () => {
               .then((response) => response.blob())
               .then((blob) => {
                 const formData = new FormData();
+
                 formData.append("image", blob, item.name); // comment il sait que c'est la data  de l'image ?
                 formData.append("title", item.name);
                 if (descriptionValue) {
                   formData.append("description", descriptionValue);
                 }
                 formData.append("concours", "1");
-                formData.append("id", userID.user_id);
+                formData.append("id", userId); // peut poser probleme a tester
+                formData.append("first_photo", "1"); // ATTENTION NOUVELLE LIGNE PEUT POSER PROBL7ME
 
                 publicationService
                   .uploadPublicationImage(formData, idPubli)
                   .then((res) => {
-                    toast({
-                      title: `La publication est en ligne.`,
-                      status: "success",
-                      duration: 3000,
-                      isClosable: true,
-                    });
                     navigate("/images");
                   })
                   .catch((err) =>
@@ -97,13 +156,19 @@ const Publication: React.FC = () => {
         .catch((err) => {
           console.log("la publication n'est pas passé " + err);
         });
+      toast({
+        title: `La publication est en ligne.`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
   return (
     <Flex alignItems="center" justifyContent="center">
       <Box textAlign="center">
-        <Box marginRight="2" marginLeft="2">
+        <Box marginTop="10px" marginRight="2" marginLeft="2">
           <FileUploadButton onFilesSelected={handleFilesSelected} />
         </Box>
         {selectedFiles.length > 0 && (
@@ -123,7 +188,20 @@ const Publication: React.FC = () => {
                 borderRadius="md"
                 marginRight="2"
                 marginBottom="2"
+                position="relative" // Ajoutez cette ligne pour le positionnement relatif
               >
+                <CloseIcon
+                  position="absolute"
+                  top="8px"
+                  right="8px"
+                  color="white"
+                  bg="rgba(0, 0, 0, 0.5)"
+                  borderRadius="full"
+                  boxSize="20px"
+                  p="1"
+                  cursor="pointer"
+                  onClick={() => handleRemoveFileAtIndex(index)} // Ajoutez une fonction de gestion pour la suppression si nécessaire
+                />
                 <img
                   src={URL.createObjectURL(file)}
                   alt={`Selected file ${index + 1}`}
@@ -134,13 +212,14 @@ const Publication: React.FC = () => {
           </Box>
         )}
         <FormControl isRequired>
-          <FormLabel>Rentrer la description</FormLabel>
+          <FormLabel color="white">Rentrer la description</FormLabel>
           <Textarea
             placeholder="Entrez votre description ici"
-            maxLength={300}
+            width="300px"
             id="description"
+            color="white"
           />
-          <FormHelperText>Maximum 300 caractères</FormHelperText>
+          <FormHelperText color="white">Maximum 300 caractères</FormHelperText>
           <Button type="submit" onClick={onSubmit}>
             Publier
           </Button>
