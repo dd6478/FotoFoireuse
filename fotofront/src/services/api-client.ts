@@ -2,14 +2,14 @@ import axios, {CanceledError} from "axios";
 import { jwtDecode } from "jwt-decode";
 
 const apiClient = axios.create({
-    baseURL:"http://dd64.fr/api/",
+    baseURL:"https://dd64.fr/api/",
 })
 
 // Fonction pour rafraîchir le jeton d'accès
 const refreshAccessTokenV2 = async () => {
   const refreshToken = getRefreshToken();
   try {
-    const response = await axios.post('http://dd64.fr/api/token/refresh/', { // mettre l'url complet sinon boucle infini
+    const response = await axios.post('https://dd64.fr/api/token/refresh/', { // mettre l'url complet sinon boucle infini
       refresh: refreshToken,
     });
     const accessToken = response.data.access;

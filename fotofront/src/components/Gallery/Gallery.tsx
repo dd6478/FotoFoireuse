@@ -6,6 +6,7 @@ import concoursService from "../../services/concours/concours-service";
 import publicationService from "../../services/publication/publication-service";
 import { jwtDecode } from "jwt-decode";
 import fotoService from "../../services/foto/foto-service";
+import Compteur from "../compteur/Compteur";
 
 interface FileItem {
   title: string;
@@ -76,6 +77,7 @@ const Gallery = () => {
         mt={3}
         centerContent
       >
+        <Compteur targetDate="2024-10-06T00:00:00" />
         <Flex flexWrap="wrap" justifyContent="center">
           {files.map((file, index) => (
             <Box

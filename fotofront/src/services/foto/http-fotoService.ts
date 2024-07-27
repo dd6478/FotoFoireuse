@@ -7,6 +7,10 @@ class HttpService {
     this.endpoint = endpoint;
   }
 
+  async getToutesLesPhotosDuUser(id:string){
+    return await apiClient.get(this.endpoint + "user/" + id + "/" )
+  }
+
   getPhotos(id:number){
     if (this.endpoint === "publications/") {
       return apiClient.get(this.endpoint + id + "/photos/")

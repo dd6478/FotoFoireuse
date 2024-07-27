@@ -1,0 +1,16 @@
+.centered-div {
+    background-color: white;
+    border-radius: 15px;
+    padding: 10px;
+    width: 80%; /* Ajustez cette valeur selon vos besoins */
+    margin: 10px auto; /* Centre horizontalement et ajoute un espace en haut */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optionnel : pour ajouter une ombre */
+    text-align: center; /* Centre le texte à l'intérieur de la div */
+    font-size: 30px;
+    font-family: 'Viking';
+}
+
+@font-face {
+    font-family: 'Viking';
+    src: url(../../assets/fonts/PRViking.ttf) format('truetype');
+}

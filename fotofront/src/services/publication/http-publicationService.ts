@@ -20,6 +20,10 @@ class HttpService {
       return await apiClient.get(this.endpoint + id + "/photos/")
   }
 
+  async deletePublication(id:number){ // pour avoir une liste des images d'une publication avec le user id en plus
+    return await apiClient.delete(this.endpoint + id + "/")
+}
+
   async uploadPublicationImage(formData: FormData,idPubli:number) {
 
     try {
