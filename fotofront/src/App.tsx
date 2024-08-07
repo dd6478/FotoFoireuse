@@ -10,12 +10,13 @@ import FotoIndex from "./components/FotoIndex/FotoIndex";
 import PublicationAffichage from "./components/Publication/PublicationAffichage";
 import Publication from "./components/PublicationUpload/Publication";
 import { Box } from "@chakra-ui/react";
+import Generateur from "./components/generateur/Generateur";
 
 function App() {
   return (
     <Router>
-      <NavBar />
-      <Box h="60px" bg="#31506d"></Box>
+      {/*<NavBar /> // j'ai commente parce que le connexion ne marchait pas mais il faut laisser ca
+      <Box h="60px" bg="#31506d"></Box> // pour avoir un espace */}
       <Routes>
         <Route path="/" element={<FotoIndex />} />
         <Route path="/images" element={<Gallery />} />
@@ -23,6 +24,7 @@ function App() {
         <Route path="/inscription" element={<FotoForm />} />
         <Route path="/publication" element={<Publication />} />
         <Route path="/test" element={<RefreshTokenButton />} />
+        <Route path="/generateur" element={<Generateur />} />
         <Route
           path="/publication/:idPublication"
           element={<PublicationAffichage />}
