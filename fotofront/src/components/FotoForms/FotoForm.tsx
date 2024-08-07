@@ -5,7 +5,8 @@ import userService, { User } from "../../services/user/user-service";
 import axios, { CanceledError } from "axios";
 import { useState } from "react";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import Generateur from "../generateur/generateur";
 
 const schema = z
   .object({
@@ -36,6 +37,9 @@ const schema = z
 type FormData = z.infer<typeof schema>;
 
 const FotoForm = () => {
+  const location = useLocation();
+  const { titre } = location.state || {};
+  const [text, setText] = useState(titre);
   const [erreur, setErreur] = useState("");
   const navigate = useNavigate();
 
@@ -57,6 +61,11 @@ const FotoForm = () => {
     formState: { errors, isValid },
   } = useForm<FormData>({ resolver: zodResolver(schema) }); // FormData pour lui dire la forme de l'objet rendu et avoir des propositions
 
+  // Fonction pour gérer les changements dans le champ de saisie
+  const handleChange = (event) => {
+    setText(event.target.value);
+  };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -77,11 +86,16 @@ const FotoForm = () => {
           id="username"
           type="text"
           className="form-control"
-        ></input>
+          value={text} // apres le generateur de nom
+          onChange={handleChange}
+        ></input>{" "}
+        <a onClick={() => navigate("/Generateur")}>
+          Pas d'inspi? Utilise le generateur ikae!
+        </a>
         {errors.username && (
           <p className="text-danger">{errors.username.message}</p>
-        )}
-
+        )}{" "}
+        <br />
         <label htmlFor="first-name" style={{ color: "white" }}>
           {" "}
           Nom{" "}
@@ -95,7 +109,6 @@ const FotoForm = () => {
         {errors.first_name && (
           <p className="text-danger">{errors.first_name.message}</p>
         )}
-
         <label htmlFor="last_name" style={{ color: "white" }}>
           {" "}
           Prénom{" "}
@@ -109,7 +122,6 @@ const FotoForm = () => {
         {errors.last_name && (
           <p className="text-danger">{errors.last_name.message}</p>
         )}
-
         <label htmlFor="sexe" style={{ color: "white" }}>
           {" "}
           Sexe{" "}
@@ -118,7 +130,6 @@ const FotoForm = () => {
           <option value="H">Homme</option>
           <option value="F">Femme</option>
         </select>
-
         <label htmlFor="mail" style={{ color: "white" }}>
           {" "}
           Mail{" "}
@@ -130,7 +141,6 @@ const FotoForm = () => {
           className="form-control"
         ></input>
         {errors.email && <p className="text-danger">{errors.email.message}</p>}
-
         <label htmlFor="password" style={{ color: "white" }}>
           {" "}
           Mot de passe{" "}
@@ -144,7 +154,6 @@ const FotoForm = () => {
         {errors.password && (
           <p className="text-danger">{errors.password.message}</p>
         )}
-
         <label htmlFor="confirmPassword" style={{ color: "white" }}>
           {" "}
           Confirmer le mot de passe{" "}
