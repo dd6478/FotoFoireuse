@@ -9,7 +9,7 @@ const RefreshTokenButton = () => {
   var log = "";
   const test1 = async () => {
     const response = await axios.post(
-      "https://dd64.fr/api/concours/",
+      "https://dd64.fr/api/publications/1/",
       {
         name: "viking",
         description: "on est la",
@@ -28,30 +28,28 @@ const RefreshTokenButton = () => {
 
   const test2 = async () => {
     // pour recuperer la description
-    const response = await axios.get(
-      "https://dd64.fr/api/concours/1/publications/",
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access")}`,
-        },
+    const response = await publicationService.getListePublication();
+    let pubID = null;
+    for (let i = 0; i < response.data.length; i++) {
+      const item = response.data[i];
+      if (item["user"] === 2) {
+        // Assurez-vous d'utiliser '===' pour la comparaison
+        pubID = item["ID"];
+
+        break; // Cela arrêtera la boucle 'for'
       }
-    );
-    response.data.forEach((item) => {
-      if (item.user === 2) {
-        console.log(item.description);
-      }
-    });
+    }
+    console.log(response.data);
+    console.log(pubID);
+    publicationService.deletePublication(5);
   };
+
   const test3 = async () => {
-    const response = await axios.post(
-      "http://dd64.fr/api/publications/1/votes/",
-      { user: "1", note: 4 },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access")}`,
-        },
-      }
-    );
+    const response = await axios.delete("http://dd64.fr/api/publications/1/", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access")}`,
+      },
+    });
     console.log(response);
   };
   const test4 = async () => {

@@ -19,6 +19,7 @@ import { jwtDecode } from "jwt-decode";
 import concoursService from "../../services/concours/concours-service";
 import { useNavigate } from "react-router-dom";
 import publicationService from "../../services/publication/publication-service";
+
 import axios from "axios";
 import foto from "../../services/foto/http-fotoService";
 
@@ -46,7 +47,7 @@ const Publication: React.FC = () => {
   const [userId, setUserId] = useState("");
   const [dejaPublie, setdejaPublie] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [publicationId, setPublicationId] = useState();
+  const [publicationId, setPublicationId] = useState(0);
 
   // Fonction pour télécharger une image en utilisant fotoService et la convertir en un objet File
   const fetchImageAsFile = async (fileID, fileName) => {
@@ -72,11 +73,8 @@ const Publication: React.FC = () => {
       userID = jwtDecode<JwtPayload>(token);
       setUserId(userID.user_id);
     }
-    //publicationService.getPublication(userId).then((data) => {setdejaPublie(true);setPublicationId(data.) }); // ridicule ce que je viens de faire, je recupere la publi dont l'id est userId, pas la publie dont le userId est userId
-    // si la personne a déjà publié on charge ses photos et sa description (et son titre?) et y'aura qu a repatch si il y a des modifs.
 
     const fetchImages = async () => {
-      //const filesToDownload = await publicationService.getPhotos(3); // obntenir une liste des id des photos d'une publi, mais comme ils ont tous une publi...
       const filesToDownload = await fotoService.getToutesLesPhotosDuUser(
         userID.user_id
       );
@@ -109,10 +107,27 @@ const Publication: React.FC = () => {
 
   const onSubmit = () => {
     if (dejaPublie) {
-      //publicationService.deletePublication(publicationId)
-      // supprimer la publicationpu
-      console.log("tu as deja publié");
+      // pour recuperer l'id de la publication
+      const recupPubId = async () => {
+        const response = await publicationService.getListePublication();
+        let pubID = null;
+        for (let i = 0; i < response.data.length; i++) {
+          const item = response.data[i];
+          if (item["user"] === userId) {
+            pubID = item["ID"];
+            console.log(item["ID"]);
+            break;
+          }
+        }
+        // on supprime l'ancienne
+        console.log(pubID);
+        if (pubID != null) {
+          publicationService.deletePublication(pubID);
+        }
+      };
+      recupPubId();
     }
+
     const descriptionInput = document.getElementById("description");
     if (descriptionInput instanceof HTMLTextAreaElement) {
       const descriptionValue = descriptionInput.value;

@@ -12,7 +12,7 @@ class HttpService {
     return apiClient.get(this.endpoint + id + "/")
   }
 
-  getListePublication(){
+  async getListePublication(){
     return apiClient.get(this.endpoint)
   }
 
