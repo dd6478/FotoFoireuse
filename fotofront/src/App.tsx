@@ -15,8 +15,8 @@ import Generateur from "./components/generateur/Generateur";
 function App() {
   return (
     <Router>
-      {/*<NavBar /> // j'ai commente parce que le connexion ne marchait pas mais il faut laisser ca
-      <Box h="60px" bg="#31506d"></Box> // pour avoir un espace */}
+      <NavBar />
+      <Box h="60px" bg="#31506d"></Box>
       <Routes>
         <Route path="/" element={<FotoIndex />} />
         <Route path="/images" element={<Gallery />} />
