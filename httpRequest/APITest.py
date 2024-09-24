@@ -124,7 +124,7 @@ class FotofoireuseAPI:
             print(response.content)  # print the response content if the status code is not 201
             return False
 
-loginAPI = LoginAPI("http://localhost/api")
+loginAPI = LoginAPI("http://dd64.fr/api")
 print(loginAPI.register("testApi", "testAPI", "test@API.fr", "name", "last", "M"))
 print(loginAPI.login("testApi", "testAPI"))
 token = loginAPI.accessToken
@@ -132,7 +132,7 @@ print(loginAPI.refresh())
 if token != loginAPI.accessToken:
     print(True)
 
-fotofoireuseAPI = FotofoireuseAPI("http://localhost/api")
+fotofoireuseAPI = FotofoireuseAPI("http://dd64.fr/api")
 if int(input("1: init, 2: continue")) == 1:
     print(fotofoireuseAPI.addConcours("concours1", "desc1", "2022-01-01", "2022-01-02", loginAPI.accessToken))
     print(fotofoireuseAPI.addPublications("publi1", loginAPI.accessToken))
