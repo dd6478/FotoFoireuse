@@ -18,8 +18,8 @@ content-type: application/json
 }
 
 ###
-GET http://dd64.fr/api/photos/8/download/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE3NTk0NzY2LCJpYXQiOjE3MTc1OTQ0NjYsImp0aSI6ImUzYTBjYTJkMmU4ZjQ5MWM4YTM5NGZmNmI0MTY5NTdjIiwidXNlcl9pZCI6M30.7eT29aYDYZ7uttAA3Pv5Fo71J4wuT8FABxb1yhoZIxg
+GET http://dd64.fr/api/concours/1/publications/
+Authorization: Bearer .eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE3NjYyNzMxLCJpYXQiOjE3MTc2NjI0MzEsImp0aSI6ImE4NmJkOWY5YjhiYjQ2ZDM4YjI3ZmU2ZjQyZGIyOTVmIiwidXNlcl9pZCI6M30.lk2LQmro3iYhWKXNXjQTRBteuSUnS4q-BJvpSPYpRSA
 content-type: application/json
 
 
