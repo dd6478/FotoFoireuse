@@ -19,6 +19,7 @@ import { jwtDecode } from "jwt-decode";
 import concoursService from "../../services/concours/concours-service";
 import { useNavigate } from "react-router-dom";
 import publicationService from "../../services/publication/publication-service";
+
 import axios from "axios";
 import foto from "../../services/foto/http-fotoService";
 
@@ -46,7 +47,7 @@ const Publication: React.FC = () => {
   const [userId, setUserId] = useState("");
   const [dejaPublie, setdejaPublie] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [publicationId, setPublicationId] = useState();
+  const [publicationId, setPublicationId] = useState<number | null>(null);
 
   // Fonction pour télécharger une image en utilisant fotoService et la convertir en un objet File
   const fetchImageAsFile = async (fileID, fileName) => {
@@ -72,16 +73,29 @@ const Publication: React.FC = () => {
       userID = jwtDecode<JwtPayload>(token);
       setUserId(userID.user_id);
     }
-    //publicationService.getPublication(userId).then((data) => {setdejaPublie(true);setPublicationId(data.) }); // ridicule ce que je viens de faire, je recupere la publi dont l'id est userId, pas la publie dont le userId est userId
-    // si la personne a déjà publié on charge ses photos et sa description (et son titre?) et y'aura qu a repatch si il y a des modifs.
 
     const fetchImages = async () => {
-      //const filesToDownload = await publicationService.getPhotos(3); // obntenir une liste des id des photos d'une publi, mais comme ils ont tous une publi...
       const filesToDownload = await fotoService.getToutesLesPhotosDuUser(
         userID.user_id
       );
 
+      // A SUUUUUUUUUUUUUUUUUUUUPRIMER
       setdejaPublie(filesToDownload.data.length > 0); // boolean qui sert a savoir si l'utilisateur a deja publie ou non
+
+      // Choper  L'id de la publication
+      const response = await publicationService.getListePublication();
+      let pubID = null;
+      for (let i = 0; i < response.data.length; i++) {
+        const item = response.data[i];
+        if (item["user"] === userID.user_id) {
+          // Assurez-vous d'utiliser '===' pour la comparaison
+          pubID = item["ID"];
+
+          break; // Cela arrêtera la boucle 'for'
+        }
+      }
+
+      setPublicationId(pubID);
 
       const files = await Promise.all(
         // transformer les blobs en fichiers
@@ -108,60 +122,70 @@ const Publication: React.FC = () => {
   };
 
   const onSubmit = () => {
-    if (dejaPublie) {
-      //publicationService.deletePublication(publicationId)
-      // supprimer la publicationpu
-      console.log("tu as deja publié");
+    if (publicationId != null) {
+      // on supprime l'ancienne
+      publicationService.deletePublication(publicationId);
     }
-    const descriptionInput = document.getElementById("description");
-    if (descriptionInput instanceof HTMLTextAreaElement) {
-      const descriptionValue = descriptionInput.value;
 
-      const formData = new FormData();
-      formData.append("title", "321321");
-      formData.append("description", descriptionValue);
+    if (selectedFiles.length > 0) {
+      const descriptionInput = document.getElementById("description");
+      if (descriptionInput instanceof HTMLTextAreaElement) {
+        const descriptionValue = descriptionInput.value;
 
-      concoursService
-        .uploadPublication(formData)
-        .then((res) => {
-          const idPubli = res.data.ID;
-          selectedFiles.map((item) => {
-            fetch(URL.createObjectURL(item))
-              .then((response) => response.blob())
-              .then((blob) => {
-                const formData = new FormData();
+        const formData = new FormData();
+        formData.append("title", "321321");
+        formData.append("description", descriptionValue);
 
-                formData.append("image", blob, item.name); // comment il sait que c'est la data  de l'image ?
-                formData.append("title", item.name);
-                if (descriptionValue) {
-                  formData.append("description", descriptionValue);
-                }
-                formData.append("concours", "1");
-                formData.append("id", userId); // peut poser probleme a tester
-                formData.append("first_photo", "1"); // ATTENTION NOUVELLE LIGNE PEUT POSER PROBL7ME
+        concoursService
+          .uploadPublication(formData)
+          .then((res) => {
+            const idPubli = res.data.ID;
+            selectedFiles.map((item) => {
+              fetch(URL.createObjectURL(item))
+                .then((response) => response.blob())
+                .then((blob) => {
+                  const formData = new FormData();
 
-                publicationService
-                  .uploadPublicationImage(formData, idPubli)
-                  .then((res) => {
-                    navigate("/images");
-                  })
-                  .catch((err) =>
-                    console.log(
-                      "la requete n'est pas passée, avertire l'utilisateur"
-                    )
-                  );
-              });
+                  formData.append("image", blob, item.name); // comment il sait que c'est la data  de l'image ?
+                  formData.append("title", item.name);
+                  if (descriptionValue) {
+                    formData.append("description", descriptionValue);
+                  }
+                  formData.append("concours", "1");
+                  formData.append("id", userId); // peut poser probleme a tester
+                  formData.append("first_photo", "1"); // ATTENTION NOUVELLE LIGNE PEUT POSER PROBL7ME
+
+                  publicationService
+                    .uploadPublicationImage(formData, idPubli)
+                    .then((res) => {
+                      // la il faudra modifier la first photo
+
+                      // fin, on revient vers la page images
+                      navigate("/images");
+                    })
+                    .catch((err) =>
+                      console.log(
+                        "la requete n'est pas passée, avertire l'utilisateur"
+                      )
+                    );
+                });
+            });
+            // on recupere la publi pour determiner la first photo
+            publicationService.getPublication(idPubli).then((res) => {
+              console.log(res);
+            });
+          })
+          .catch((err) => {
+            console.log("la publication n'est pas passée " + err);
           });
-        })
-        .catch((err) => {
-          console.log("la publication n'est pas passé " + err);
+
+        toast({
+          title: `La publication est en ligne.`,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
         });
-      toast({
-        title: `La publication est en ligne.`,
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      }
     }
   };
 
@@ -221,7 +245,7 @@ const Publication: React.FC = () => {
           />
           <FormHelperText color="white">Maximum 300 caractères</FormHelperText>
           <Button type="submit" onClick={onSubmit}>
-            Publier
+            Sauvegarder
           </Button>
         </FormControl>
       </Box>
