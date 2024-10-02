@@ -2,7 +2,7 @@
 GET http://localhost:8000/api/
 
 ### register
-POST http://localhost/api/user/register/
+POST https://dd64.fr/api/user/register/
 content-type: application/json
 
 {
@@ -15,12 +15,12 @@ content-type: application/json
 }
 
 ### login
-POST http://localhost/api/user/login/
+POST https://dd64.fr/api/user/login/
 content-type: application/json
 
 {
-    "username": "dd64",
-    "password": "jeTest"
+    "username": "juju",
+    "password": "rerere"
 }
 
 ### refresh token
@@ -34,6 +34,19 @@ content-type: application/json
 ### test
 GET http://localhost:8000/api/user/test/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0ODU5ODQ2LCJpYXQiOjE3MTQ4NTk1NDYsImp0aSI6ImMxZTdiNDk0M2NmZDRhMGY5YWUzZmJhMzk0YzE3ODBkIiwidXNlcl9pZCI6MX0.LVcBISVQLFmUJszeDqvVcuUMK-W4AI1RY6uaj9hamwc
+
+###
+PATCH https://dd64.fr/api/publications/16/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI3ODU0NDQzLCJpYXQiOjE3Mjc4NTQxNDMsImp0aSI6IjMzYjk5YzM5NDYyNzQ1MzI4OWY2YWU2ZThhZTU2MDFmIiwidXNlcl9pZCI6MX0.uQ7glbcxAx7E1s3UeJTm0PTk-L2GzK9gmBXbCEPOXlY
+
+{
+"title": "test",
+"first_photo":23
+}
+
+###
+GET https://dd64.fr/api/photos/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI3ODU0NDQzLCJpYXQiOjE3Mjc4NTQxNDMsImp0aSI6IjMzYjk5YzM5NDYyNzQ1MzI4OWY2YWU2ZThhZTU2MDFmIiwidXNlcl9pZCI6MX0.uQ7glbcxAx7E1s3UeJTm0PTk-L2GzK9gmBXbCEPOXlY
 
 ###
 GET http://localhost:8000/api/user/2/
