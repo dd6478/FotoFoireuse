@@ -13,7 +13,7 @@ class PublicationsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Publications
         fields = ['user', 'ID', 'first_photo', 'concours', 'title', 'description']
-        read_only_fields = ['user', 'ID', 'concours', 'first_photo']
+        read_only_fields = ['user', 'ID', 'concours']
 
     def to_representation(self, instance):
         rep = super().to_representation(instance)
