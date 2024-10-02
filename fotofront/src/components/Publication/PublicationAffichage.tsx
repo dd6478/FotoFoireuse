@@ -34,17 +34,26 @@ const PublicationAffichage = () => {
   const [loading, setLoading] = useState(true);
   const [windowSize, setWindowSize] = useState(window.innerWidth); // hoock pour gérer la taille des phots en fonction de la taille de l'écran
   const [userId, setUserId] = useState("");
-  const [userName, setUserName] = useState("Matthieu");
+  const [userName, setUserName] = useState("Prenom");
+  const [description, setDescription] = useState("Description");
 
   useEffect(() => {
     const fetchFilesAndImages = async () => {
       try {
         // obtenir la liste des ID des photos du user, avec son ID
         const res = await publicationService.getPhotos(publicationsId);
-        setUserId(res.data[0].user); // lancer le debugeur ici
-        // recuperer le nom du user
-        //const reponseUser = await userService.getUserName(res.data[0].user);
-        setUserName("Matthieu");
+        setUserId(res.data[0].user);
+
+        // recuperer le nom du user et la description
+        await userService.getUserName(res.data[0].user).then((res) => {
+          setUserName(res.data.username);
+        });
+
+        // recuperer la description de la publication
+        await publicationService.getPublication(publicationsId).then((res) => {
+          setDescription(res.data.description);
+        });
+
         // recuperer les données des photos
         const filesWithImages = await Promise.all(
           res.data.map(async (file: any) => {
@@ -110,30 +119,42 @@ const PublicationAffichage = () => {
 
   return (
     <>
-      <Text fontSize="xl" color="white" textAlign="center">
+      <Text fontSize="2xl" color="white" textAlign="center">
         {userName}
+      </Text>
+      <Text
+        fontSize="lg"
+        color="white"
+        textAlign="left"
+        width={{ base: `${windowSize}px`, md: "400px", lg: "400px" }}
+        mx="auto"
+      >
+        {description}
       </Text>
       <Container maxW="container.md" mt={1} centerContent>
         <Flex flexWrap="wrap" justifyContent="center">
-          {files.map((file, index) => (
-            <Box
-              key={index}
-              margin="3px"
-              overflow="hidden"
-              borderRadius="md"
-              height={{ base: `${windowSize}px`, md: "400px", lg: "400px" }}
-              width={{ base: `${windowSize}px`, md: "400px", lg: "400px" }}
-            >
-              <img
-                src={file.image}
-                alt={`Selected file ${index + 1}`}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
-            </Box>
-          ))}
+          {files
+            .slice()
+            .reverse()
+            .map((file, index) => (
+              <Box
+                key={index}
+                margin="3px"
+                overflow="hidden"
+                borderRadius="md"
+                height={{ base: `${windowSize}px`, md: "400px", lg: "400px" }}
+                width={{ base: `${windowSize}px`, md: "400px", lg: "400px" }}
+              >
+                <img
+                  src={file.image}
+                  alt={`Selected file ${index + 1}`}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              </Box>
+            ))}
         </Flex>
       </Container>
-      <IconButton
+      {/* <IconButton
         icon={<HamburgerIcon color={"black"} />}
         aria-label="Add"
         size="lg"
@@ -147,7 +168,7 @@ const PublicationAffichage = () => {
         color="teal"
         _hover={{ bg: "gray.200" }}
         _active={{ bg: "gray.300" }}
-      />
+      /> */}
       <Button
         colorScheme="blue"
         aria-label="Add"
