@@ -15,7 +15,7 @@ class HttpService {
 
   connect(data: FieldValues) {
     return apiClient.post(this.endpoint + 'login/',data);
-}
+  }
 
   getUserName(userId: number) {
     return apiClient.get(this.endpoint + userId + "/");

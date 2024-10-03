@@ -122,26 +122,24 @@ const RefreshTokenButton = () => {
 
   // obtenir les likes
   const test7 = async () => {
-    const response = await axios
-      .get("https://dd64.fr/api/votes/", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access")}`,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-      });
+    // await publicationService.getListePublication().then((res) => {
+    //   console.log(res);
+    // });
+    fotoService.getToutesLesPhotosDuUser(1).then((res) => {
+      console.log(res);
+    });
   };
 
   return (
     <div>
-      <Button onClick={test3}>Test Requete patch</Button>
-      <Button onClick={test5}>Test Requete patch</Button>
+      <Button onClick={test4}>Obtenir les likes</Button>
+      <Button onClick={test7}>Test Requete patch</Button>
+      <Button onClick={test7}>Test Requete patch</Button>
 
       <ul>
         {tabVotes.map((item, index) => (
           <li style={{ color: "white" }} key={index}>
-            {item.first_name} {item.last_name}: {item.votes}
+            {item.first_name} {item.last_name} {item.userName}: {item.votes}
           </li>
         ))}
       </ul>

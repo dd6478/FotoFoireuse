@@ -49,7 +49,7 @@ const FotoForm = () => {
     userService
       .add(data)
       .then((res) => {
-        alert("Bienvenu dans la drakar vinking " + data["username"] + " !");
+        alert("Bienvenue dans la drakar viking " + data["username"] + " !");
         navigate("/");
       })
       .catch((err) => setErreur(err.message));

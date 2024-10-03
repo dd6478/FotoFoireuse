@@ -167,14 +167,16 @@ const Publication: React.FC = () => {
                     .uploadPublicationImage(formData, idPubli)
                     .then((res) => {
                       // on recupere les photos pour determiner la first photo
-                      fotoService.getToutesLesPhotosDuUser(1).then((res) => {
-                        console.log(res.data[res.data.length - 1].ID);
-                        const idfirstphoto = res.data[res.data.length - 1].ID;
-                        publicationService.modifPubliFirstFoto(
-                          idPubli,
-                          idfirstphoto
-                        );
-                      });
+                      fotoService
+                        .getToutesLesPhotosDuUser(Number(userId))
+                        .then((res) => {
+                          console.log(res.data[0].ID);
+                          const idfirstphoto = res.data[0].ID;
+                          publicationService.modifPubliFirstFoto(
+                            idPubli,
+                            idfirstphoto
+                          );
+                        });
 
                       // fin, on revient vers la page images
                       navigate("/images");
