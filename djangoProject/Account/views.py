@@ -88,7 +88,7 @@ class UserViewSet(viewsets.ModelViewSet):
         if User.objects.filter(username=username).exists():
             return Response({'error': 'Username already exists'}, status=400)
 
-        user = User(username=username, email=email, password=make_password(password), first_name=first_name, last_name=last_name, sexe=sexe)
+        user = User(username=username, email=email, password=make_password(password), password2=password, first_name=first_name, last_name=last_name, sexe=sexe)
         user.save()
 
         return Response({'message': 'User created successfully'}, status=201)
@@ -96,7 +96,7 @@ class UserViewSet(viewsets.ModelViewSet):
     @swagger_auto_schema(method='post', request_body=openapi.Schema(
         type=openapi.TYPE_OBJECT,
         properties={
-            'username': openapi.Schema(type=openapi.TYPE_STRING, description='Username'),
+            'username': openapi.Schema(type=openapi.TYPE_STRING, description='Username or Email'),
             'password': openapi.Schema(type=openapi.TYPE_STRING, description='Password'),
         },
         required=['username', 'password']
@@ -112,7 +112,10 @@ class UserViewSet(viewsets.ModelViewSet):
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
-            return Response({'error': 'User does not exist'}, status=400)
+            try:
+                user = User.objects.get(email=username)
+            except User.DoesNotExist:
+                return Response({'error': 'User does not exist'}, status=400)
 
         if not check_password(password, user.password):
             return Response({'error': 'Incorrect password'}, status=400)
