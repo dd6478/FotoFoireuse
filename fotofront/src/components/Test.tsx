@@ -58,11 +58,11 @@ const RefreshTokenButton = () => {
 
   //obtenir un concours
   const test3 = async () => {
-    fotoService.getToutesLesPhotosDuUser(1).then((res) => {
-      console.log(res.data[res.data.length - 1].ID);
-      const idfirstphoto = res.data[res.data.length - 1].ID;
-      publicationService.modifPubliFirstFoto(37, idfirstphoto);
-    });
+    // fotoService.getToutesLesPhotosDuUser(1).then((res) => {
+    //   console.log(res.data[res.data.length - 1].ID);
+    //   const idfirstphoto = res.data[res.data.length - 1].ID;
+    //   publicationService.modifPubliFirstFoto(37, idfirstphoto);
+    // });
   };
 
   const test4 = async () => {
@@ -114,26 +114,27 @@ const RefreshTokenButton = () => {
 
   // obtenir les photos
   const test6 = async () => {
-    fotoService.getToutesLesPhotosDuUser(1).then((res) => {
-      const idfirstphoto = res.data[0].ID;
-      console.log(idfirstphoto);
-    });
+    const res = await concoursService.liste();
+    console.log(res);
   };
 
   // obtenir les likes
   const test7 = async () => {
-    // await publicationService.getListePublication().then((res) => {
+    // fotoService.getToutesLesPhotosDuUser(Number(12)).then((res) => {
     //   console.log(res);
     // });
-    fotoService.getToutesLesPhotosDuUser(1).then((res) => {
+    publicationService.getListePublication().then((res) => {
       console.log(res);
     });
+    publicationService.deletePublication(68);
+    publicationService.deletePublication(76);
+    publicationService.deletePublication(73);
   };
 
   return (
     <div>
       <Button onClick={test4}>Obtenir les likes</Button>
-      <Button onClick={test7}>Test Requete patch</Button>
+      <Button onClick={test6}>Test Requete patch</Button>
       <Button onClick={test7}>Test Requete patch</Button>
 
       <ul>

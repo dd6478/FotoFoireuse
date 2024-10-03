@@ -29,26 +29,55 @@ const Gallery = () => {
         const res = await concoursService.liste();
         const filesWithImages = await Promise.all(
           res.data.map(async (file) => {
+            let idPhoto = 273; // Valeur par défaut
+
             try {
-              const image = await fotoService.download(file.first_photo);
+              // Gestion asynchrone de la première photo
+              if (file.first_photo === null) {
+                // Attente de la réponse avant de continuer
+                const resPhotos = await fotoService.getToutesLesPhotosDuUser(
+                  file.user
+                );
+
+                // Vérifier que resPhotos contient bien des données
+                if (resPhotos.data && resPhotos.data.length > 0) {
+                  idPhoto = resPhotos.data[0].ID;
+                } else {
+                  console.log("Aucune photo n'est dispo");
+                  // Si aucune photo n'est disponible pour cet utilisateur, on retourne sans essayer de télécharger l'image
+                  return { ...file, image: "" };
+                }
+              } else {
+                idPhoto = file.first_photo;
+              }
+
+              // Téléchargement de l'image uniquement une fois idPhoto mis à jour
+              const image = await fotoService.download(idPhoto);
               const contentType = image.headers["content-type"];
               const url = URL.createObjectURL(
                 new Blob([image.data], { type: contentType })
               );
+
               return { ...file, image: url };
             } catch (err) {
-              console.error(err);
-              return { ...file, image: "" };
+              console.log(err);
+              console.error("Erreur lors du traitement de l'image :", err);
+              return { ...file, image: "" }; // Retourner une image vide en cas d'erreur
             }
           })
         );
         setFiles(filesWithImages);
       } catch (err) {
-        console.error("Error loading files and images", err);
+        console.error(
+          "Erreur lors du chargement des fichiers et des images :",
+          err
+        );
       } finally {
         setLoading(false);
       }
     };
+
+    fetchFilesAndImages();
 
     const handleResize = () => {
       setWindowSize(Math.floor((window.innerWidth - 24) / 3)); // calcul pour la taille d'une image, sachant qu'il en faut 3 qui prennent le plus de place possible sur les petits ecrans

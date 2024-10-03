@@ -25,6 +25,10 @@ class HttpService {
       responseType: 'blob'})
   }
 
+  async supprFoto(id:number){
+    return apiClient.delete(this.endpoint + id +"/")
+  }
+
   async uploadPublicationImage(formData: FormData,idPubli:number) {
 
     try {
