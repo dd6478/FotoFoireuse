@@ -40,7 +40,15 @@ class UserViewSet(viewsets.ModelViewSet):
         if user.is_superuser or user == userObj:
             return super().retrieve(request, *args, **kwargs)
         else:
-            return Response({'error': "You're not allowed to do that"}, status=403)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({'error': "user not found"}, status=404)
+            return Response({
+                'username': str(user.username),
+                'first_name': str(user.first_name),
+                'last_name': str(user.last_name)
+            }, status=200)
 
     def update(self, request, *args, **kwargs):
         userObj = self.get_object()
