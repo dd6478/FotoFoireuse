@@ -45,9 +45,9 @@ class UserViewSet(viewsets.ModelViewSet):
             except User.DoesNotExist:
                 return Response({'error': "user not found"}, status=404)
             return Response({
-                'username': str(user.username),
-                'first_name': str(user.first_name),
-                'last_name': str(user.last_name)
+                'username': str(userObj.username),
+                'first_name': str(userObj.first_name),
+                'last_name': str(userObj.last_name)
             }, status=200)
 
     def update(self, request, *args, **kwargs):
