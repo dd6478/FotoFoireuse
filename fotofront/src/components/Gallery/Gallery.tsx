@@ -30,7 +30,7 @@ const Gallery = () => {
         const filesWithImages = await Promise.all(
           res.data.map(async (file) => {
             try {
-              const image = await fotoService.download(file.ID);
+              const image = await fotoService.download(file.first_photo);
               const contentType = image.headers["content-type"];
               const url = URL.createObjectURL(
                 new Blob([image.data], { type: contentType })

@@ -48,6 +48,7 @@ const Publication: React.FC = () => {
   const [dejaPublie, setdejaPublie] = useState(false);
   const [loading, setLoading] = useState(true);
   const [publicationId, setPublicationId] = useState<number | null>(null);
+  const [descritpion, setDescription] = useState<string>(" ");
 
   // Fonction pour télécharger une image en utilisant fotoService et la convertir en un objet File
   const fetchImageAsFile = async (fileID, fileName) => {
@@ -65,6 +66,7 @@ const Publication: React.FC = () => {
   };
 
   useEffect(() => {
+    // trouver le user ID
     const token = localStorage.getItem("access");
     var userID: JwtPayload = {
       user_id: "",
@@ -74,6 +76,7 @@ const Publication: React.FC = () => {
       setUserId(userID.user_id);
     }
 
+    // recuperer les fichiers
     const fetchImages = async () => {
       const filesToDownload = await fotoService.getToutesLesPhotosDuUser(
         userID.user_id
@@ -97,13 +100,19 @@ const Publication: React.FC = () => {
 
       setPublicationId(pubID);
 
+      if (pubID != null) {
+        publicationService.getPublication(pubID).then((res) => {
+          setDescription(res.data.description);
+        });
+      }
+
       const files = await Promise.all(
         // transformer les blobs en fichiers
         filesToDownload.data.map((file) =>
           fetchImageAsFile(file.ID, file.image)
         )
       );
-      const fileList = createFileList(files); // faire une liste de fichier
+      const fileList = createFileList(files.reverse()); // faire une liste de fichier, inverser pour conserver l'ordre
       handleFilesSelected(fileList); // mettre ce tableau dans la variable locale
     };
 
@@ -153,26 +162,35 @@ const Publication: React.FC = () => {
                   }
                   formData.append("concours", "1");
                   formData.append("id", userId); // peut poser probleme a tester
-                  formData.append("first_photo", "1"); // ATTENTION NOUVELLE LIGNE PEUT POSER PROBL7ME
 
                   publicationService
                     .uploadPublicationImage(formData, idPubli)
                     .then((res) => {
-                      // la il faudra modifier la first photo
+                      // on recupere les photos pour determiner la first photo
+                      fotoService.getToutesLesPhotosDuUser(1).then((res) => {
+                        console.log(res.data[res.data.length - 1].ID);
+                        const idfirstphoto = res.data[res.data.length - 1].ID;
+                        publicationService.modifPubliFirstFoto(
+                          idPubli,
+                          idfirstphoto
+                        );
+                      });
 
                       // fin, on revient vers la page images
                       navigate("/images");
                     })
-                    .catch((err) =>
+                    .catch((err) => {
                       console.log(
                         "la requete n'est pas passée, avertire l'utilisateur"
-                      )
-                    );
+                      );
+                      toast({
+                        title: `La publication ne s'est pas sauvegardée`,
+                        status: "error",
+                        duration: 3000,
+                        isClosable: true,
+                      });
+                    });
                 });
-            });
-            // on recupere la publi pour determiner la first photo
-            publicationService.getPublication(idPubli).then((res) => {
-              console.log(res);
             });
           })
           .catch((err) => {
@@ -242,6 +260,8 @@ const Publication: React.FC = () => {
             width="300px"
             id="description"
             color="white"
+            value={descritpion}
+            onChange={(e) => setDescription(e.target.value)}
           />
           <FormHelperText color="white">Maximum 300 caractères</FormHelperText>
           <Button type="submit" onClick={onSubmit}>

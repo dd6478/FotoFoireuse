@@ -5,6 +5,7 @@ import publicationService from "../../src/services/publication/publication-servi
 import axios from "axios";
 import Compteur from "./compteur/Compteur";
 import userService from "../services/user/user-service";
+import fotoService from "../services/foto/foto-service";
 
 const RefreshTokenButton = () => {
   interface tabUser {
@@ -57,12 +58,11 @@ const RefreshTokenButton = () => {
 
   //obtenir un concours
   const test3 = async () => {
-    const response = await axios.get("https://dd64.fr/api/concours/", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("access")}`,
-      },
+    fotoService.getToutesLesPhotosDuUser(1).then((res) => {
+      console.log(res.data[res.data.length - 1].ID);
+      const idfirstphoto = res.data[res.data.length - 1].ID;
+      publicationService.modifPubliFirstFoto(37, idfirstphoto);
     });
-    console.log(response);
   };
 
   const test4 = async () => {
@@ -108,33 +108,16 @@ const RefreshTokenButton = () => {
 
   //modifier la first photo de la publi d'un mec
   const test5 = async () => {
-    const response = await axios
-      .patch(
-        "https://dd64.fr/api/publications/14/",
-        { first_photo: 11 },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access")}`,
-          },
-        }
-      )
-      .then((res) => {
-        console.log(res);
-      });
+    const response = await publicationService.getPublication(37);
+    console.log(response);
   };
 
   // obtenir les photos
   const test6 = async () => {
-    const response = await axios
-      .get("https://dd64.fr/api/photos/user/1/", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access")}`,
-        },
-      })
-      .then((res) => {
-        const idfirstphoto = res.data[0].ID;
-        console.log(idfirstphoto);
-      });
+    fotoService.getToutesLesPhotosDuUser(1).then((res) => {
+      const idfirstphoto = res.data[0].ID;
+      console.log(idfirstphoto);
+    });
   };
 
   // obtenir les likes
@@ -152,7 +135,9 @@ const RefreshTokenButton = () => {
 
   return (
     <div>
-      <Button onClick={test4}>Test Requete patch</Button>
+      <Button onClick={test3}>Test Requete patch</Button>
+      <Button onClick={test5}>Test Requete patch</Button>
+
       <ul>
         {tabVotes.map((item, index) => (
           <li style={{ color: "white" }} key={index}>

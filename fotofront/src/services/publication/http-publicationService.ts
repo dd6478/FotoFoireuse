@@ -59,6 +59,15 @@ class HttpService {
       throw error;
     }
   }
+
+  async modifPubliFirstFoto (idPubli:number,idPhoto:number){
+    try{
+      await apiClient.patch(this.endpoint + idPubli + "/",{first_photo:idPhoto})
+    }catch(error){
+      console.error('modif pas passée', error);
+      throw error;
+    }
+  }
 }
 
 const publications = (endpoint: string) => new HttpService(endpoint);
