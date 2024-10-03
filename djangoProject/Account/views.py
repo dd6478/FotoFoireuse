@@ -36,12 +36,12 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         userObj = self.get_object()
-        user = request.user
-        if user.is_superuser or user == userObj:
+        requestuser = request.user
+        if requestuser.is_superuser or requestuser == userObj:
             return super().retrieve(request, *args, **kwargs)
         else:
             try:
-                user = User.objects.get(username=username)
+                user = User.objects.get(username=requestuser.username)
             except User.DoesNotExist:
                 return Response({'error': "user not found"}, status=404)
             return Response({
