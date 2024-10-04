@@ -60,9 +60,9 @@ class HttpService {
     }
   }
 
-  async modifPubliFirstFoto (idPubli:number,idPhoto:number){
+  async modifPubliFirstFoto (idPubli:number,idPhoto:number,descr:string){
     try{
-      await apiClient.patch(this.endpoint + idPubli + "/",{first_photo:idPhoto})
+      await apiClient.patch(this.endpoint + idPubli + "/",{first_photo:idPhoto, description:descr})
     }catch(error){
       console.error('modif pas passée', error);
       throw error;

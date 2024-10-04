@@ -40,19 +40,19 @@ const PublicationAffichage = () => {
   useEffect(() => {
     const fetchFilesAndImages = async () => {
       try {
-        // obtenir la liste des ID des photos du user, avec son ID
-        const res = await publicationService.getPhotos(publicationsId);
-        setUserId(res.data[0].user);
+        var iduser = 0;
 
-        // recuperer le nom du user et la description
-        await userService.getUserName(res.data[0].user).then((res) => {
-          setUserName(res.data.username);
-        });
-
-        // recuperer la description de la publication
+        // recuperer la description, le userName et le userID de la publication
         await publicationService.getPublication(publicationsId).then((res) => {
           setDescription(res.data.description);
+          setUserId(res.data.user); // faut test
+          iduser = res.data.user;
+          userService.getUserName(iduser).then((res) => {
+            setUserName(res.data.username);
+          });
         });
+
+        const res = await fotoService.getToutesLesPhotosDuUser(iduser);
 
         // recuperer les données des photos
         const filesWithImages = await Promise.all(

@@ -131,15 +131,100 @@ const Publication: React.FC = () => {
   };
 
   const onSubmit = () => {
-    if (publicationId != null) {
-      // on supprime l'ancienne
-      publicationService.deletePublication(publicationId);
-    }
-
     if (selectedFiles.length > 0) {
+      // recuperer la description
       const descriptionInput = document.getElementById("description");
+      const descriptionValue = "";
       if (descriptionInput instanceof HTMLTextAreaElement) {
         const descriptionValue = descriptionInput.value;
+      }
+
+      // Pour le cas ou la publication est deja publie__________________________________________________________________________________
+
+      if (publicationId != null) {
+        fotoService.getToutesLesPhotosDuUser(Number(userId)).then((res) => {
+          res.data.map((file) => {
+            fotoService.supprFoto(file.ID);
+          });
+        });
+        selectedFiles.map((item) => {
+          fetch(URL.createObjectURL(item))
+            .then((response) => response.blob())
+            .then((blob) => {
+              const formData = new FormData();
+
+              formData.append("image", blob, item.name); // comment il sait que c'est la data  de l'image ?
+              formData.append("title", item.name);
+              if (descriptionValue) {
+                formData.append("description", descriptionValue);
+              }
+              formData.append("concours", "1");
+              formData.append("id", userId); // peut poser probleme a tester
+
+              publicationService
+                .uploadPublicationImage(formData, publicationId)
+                .then((res) => {
+                  // on récupère les photos pour déterminer la first photo
+                  fotoService
+                    .getToutesLesPhotosDuUser(Number(userId))
+                    .then((res) => {
+                      if (res.data && res.data.length > 0) {
+                        const idfirstphoto = res.data[0].ID;
+                        // Modifier la publication avec la première photo
+                        publicationService
+                          .modifPubliFirstFoto(
+                            publicationId,
+                            idfirstphoto,
+                            descriptionValue
+                          )
+                          .then(() => {
+                            console.log(
+                              "La première photo a été mise à jour avec succès."
+                            );
+                          })
+                          .catch((error) => {
+                            console.error(
+                              "Erreur lors de la modification de la première photo :",
+                              error
+                            );
+                          });
+                      } else {
+                        console.error(
+                          "Aucune photo trouvée pour l'utilisateur."
+                        );
+                      }
+                    })
+                    .catch((error) => {
+                      console.error(
+                        "Erreur lors de la récupération des photos de l'utilisateur :",
+                        error
+                      );
+                    });
+                })
+                .catch((error) => {
+                  console.error(
+                    "Erreur lors du téléchargement de l'image de la publication :",
+                    error
+                  );
+                });
+
+              // fin, on revient vers la page images
+              navigate("/images");
+            })
+            .catch((err) => {
+              console.log(
+                "la requete n'est pas passée, avertire l'utilisateur"
+              );
+              toast({
+                title: `La publication ne s'est pas sauvegardée`,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+              });
+            });
+        });
+      } else {
+        // pour le cas ou la publication n'est pas deja publié_____________________________________________________________
 
         const formData = new FormData();
         formData.append("title", "321321");
@@ -149,6 +234,7 @@ const Publication: React.FC = () => {
           .uploadPublication(formData)
           .then((res) => {
             const idPubli = res.data.ID;
+
             selectedFiles.map((item) => {
               fetch(URL.createObjectURL(item))
                 .then((response) => response.blob())
@@ -167,14 +253,17 @@ const Publication: React.FC = () => {
                     .uploadPublicationImage(formData, idPubli)
                     .then((res) => {
                       // on recupere les photos pour determiner la first photo
-                      fotoService.getToutesLesPhotosDuUser(1).then((res) => {
-                        console.log(res.data[res.data.length - 1].ID);
-                        const idfirstphoto = res.data[res.data.length - 1].ID;
-                        publicationService.modifPubliFirstFoto(
-                          idPubli,
-                          idfirstphoto
-                        );
-                      });
+                      fotoService
+                        .getToutesLesPhotosDuUser(Number(userId))
+                        .then((res) => {
+                          console.log(res.data[0].ID);
+                          const idfirstphoto = res.data[0].ID;
+                          publicationService.modifPubliFirstFoto(
+                            idPubli,
+                            idfirstphoto,
+                            descriptionValue
+                          );
+                        });
 
                       // fin, on revient vers la page images
                       navigate("/images");
@@ -204,7 +293,7 @@ const Publication: React.FC = () => {
           isClosable: true,
         });
       }
-    }
+    } // fin du else
   };
 
   return (

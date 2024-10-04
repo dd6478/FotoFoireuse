@@ -58,11 +58,11 @@ const RefreshTokenButton = () => {
 
   //obtenir un concours
   const test3 = async () => {
-    fotoService.getToutesLesPhotosDuUser(1).then((res) => {
-      console.log(res.data[res.data.length - 1].ID);
-      const idfirstphoto = res.data[res.data.length - 1].ID;
-      publicationService.modifPubliFirstFoto(37, idfirstphoto);
-    });
+    // fotoService.getToutesLesPhotosDuUser(1).then((res) => {
+    //   console.log(res.data[res.data.length - 1].ID);
+    //   const idfirstphoto = res.data[res.data.length - 1].ID;
+    //   publicationService.modifPubliFirstFoto(37, idfirstphoto);
+    // });
   };
 
   const test4 = async () => {
@@ -114,34 +114,33 @@ const RefreshTokenButton = () => {
 
   // obtenir les photos
   const test6 = async () => {
-    fotoService.getToutesLesPhotosDuUser(1).then((res) => {
-      const idfirstphoto = res.data[0].ID;
-      console.log(idfirstphoto);
-    });
+    const res = await concoursService.liste();
+    console.log(res);
   };
 
   // obtenir les likes
   const test7 = async () => {
-    const response = await axios
-      .get("https://dd64.fr/api/votes/", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access")}`,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-      });
+    // fotoService.getToutesLesPhotosDuUser(Number(12)).then((res) => {
+    //   console.log(res);
+    // });
+    publicationService.getListePublication().then((res) => {
+      console.log(res);
+    });
+    publicationService.deletePublication(68);
+    publicationService.deletePublication(76);
+    publicationService.deletePublication(73);
   };
 
   return (
     <div>
-      <Button onClick={test3}>Test Requete patch</Button>
-      <Button onClick={test5}>Test Requete patch</Button>
+      <Button onClick={test4}>Obtenir les likes</Button>
+      <Button onClick={test6}>Test Requete patch</Button>
+      <Button onClick={test7}>Test Requete patch</Button>
 
       <ul>
         {tabVotes.map((item, index) => (
           <li style={{ color: "white" }} key={index}>
-            {item.first_name} {item.last_name}: {item.votes}
+            {item.first_name} {item.last_name} {item.userName}: {item.votes}
           </li>
         ))}
       </ul>
