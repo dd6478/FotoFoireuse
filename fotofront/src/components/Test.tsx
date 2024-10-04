@@ -136,7 +136,7 @@ const RefreshTokenButton = () => {
   return (
     <div>
       <Button onClick={test4}>Obtenir les likes</Button>
-      <Button onClick={test6}>Test Requete patch</Button>
+      <Button onClick={test1}>Publier un concours</Button>
       <Button onClick={test3}>Test Requete patch</Button>
 
       <ul>
