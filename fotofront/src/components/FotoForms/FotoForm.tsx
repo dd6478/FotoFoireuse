@@ -15,7 +15,7 @@ const schema = z
     }),
     last_name: z
       .string()
-      .min(2, { message: "Le nom doit avoir au moins deux charactères." }),
+      .min(0, { message: "Le nom doit avoir au moins deux charactères." }),
     first_name: z
       .string()
       .min(2, { message: "Le prénom doit avoir au moins deux charactères." }),
@@ -49,7 +49,7 @@ const FotoForm = () => {
     userService
       .add(data)
       .then((res) => {
-        alert("Bienvenue dans la drakar viking " + data["username"] + " !");
+        alert("Bienvenue dans le drakar viking " + data["username"] + " !");
         navigate("/");
       })
       .catch((err) => setErreur(err.message));
@@ -89,8 +89,11 @@ const FotoForm = () => {
           value={text} // apres le generateur de nom
           onChange={handleChange}
         ></input>{" "}
-        <a onClick={() => navigate("/Generateur")}>
-          Pas d'inspi? Utilise le generateur ikae!
+        <a
+          onClick={() => navigate("/Generateur")}
+          style={{ color: "white", textDecoration: "underline" }}
+        >
+          En panne d'inspi? Utilise ikae
         </a>
         {errors.username && (
           <p className="text-danger">{errors.username.message}</p>
@@ -98,7 +101,7 @@ const FotoForm = () => {
         <br />
         <label htmlFor="first-name" style={{ color: "white" }}>
           {" "}
-          Nom{" "}
+          Nom et prénom{" "}
         </label>
         <input
           {...register("first_name")}
@@ -109,7 +112,7 @@ const FotoForm = () => {
         {errors.first_name && (
           <p className="text-danger">{errors.first_name.message}</p>
         )}
-        <label htmlFor="last_name" style={{ color: "white" }}>
+        {/* <label htmlFor="last_name" style={{ color: "white" }}>
           {" "}
           Prénom{" "}
         </label>
@@ -118,7 +121,7 @@ const FotoForm = () => {
           id="prenom"
           type="text"
           className="form-control"
-        ></input>
+        ></input> */}
         {errors.last_name && (
           <p className="text-danger">{errors.last_name.message}</p>
         )}

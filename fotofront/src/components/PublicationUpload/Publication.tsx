@@ -19,7 +19,7 @@ import { jwtDecode } from "jwt-decode";
 import concoursService from "../../services/concours/concours-service";
 import { useNavigate } from "react-router-dom";
 import publicationService from "../../services/publication/publication-service";
-
+import imageCompression from "browser-image-compression";
 import axios from "axios";
 import foto from "../../services/foto/http-fotoService";
 
@@ -119,8 +119,28 @@ const Publication: React.FC = () => {
     fetchImages();
   }, []);
 
-  const handleFilesSelected = (files: FileList) => {
-    setSelectedFiles(Array.from(files));
+  const handleFilesSelected = async (files: FileList) => {
+    const compressedFiles = await Promise.all(
+      Array.from(files).map(async (file) => {
+        // Vérifie si la taille du fichier dépasse 1 Mo (1 Mo = 1 * 1024 * 1024 octets)
+        if (file.size > 1 * 1024 * 1024) {
+          try {
+            const options = {
+              maxSizeMB: 1, // Taille maximale en Mo après compression
+              maxWidthOrHeight: 1920, // Dimensions maximales de l'image
+              useWebWorker: true, // Utilise Web Worker pour améliorer la performance
+            };
+            const compressedFile = await imageCompression(file, options);
+            return compressedFile; // Renvoie le fichier compressé
+          } catch (error) {
+            console.error("Erreur lors de la compression de l'image:", error);
+            return file; // Si la compression échoue, renvoie le fichier original
+          }
+        }
+        return file; // Renvoie le fichier original si sa taille est inférieure à 1 Mo
+      })
+    );
+    setSelectedFiles(compressedFiles);
   };
 
   const handleRemoveFileAtIndex = (indexToRemove) => {
@@ -273,7 +293,7 @@ const Publication: React.FC = () => {
                         "la requete n'est pas passée, avertire l'utilisateur"
                       );
                       toast({
-                        title: `La publication ne s'est pas sauvegardée`,
+                        title: `Une photo ne s'est pas publiée`,
                         status: "error",
                         duration: 3000,
                         isClosable: true,

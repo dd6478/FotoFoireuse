@@ -13,6 +13,7 @@
     "@hookform/resolvers": "^2.9.11",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
+    "browser-image-compression": "^2.0.2",
     "framer-motion": "^11.2.6",
     "jwt-decode": "^4.0.0",
     "react-router-dom": "^6.23.1",

@@ -58,10 +58,12 @@ const RefreshTokenButton = () => {
 
   //obtenir un concours
   const test3 = async () => {
-    // fotoService.getToutesLesPhotosDuUser(1).then((res) => {
-    //   console.log(res.data[res.data.length - 1].ID);
-    //   const idfirstphoto = res.data[res.data.length - 1].ID;
-    //   publicationService.modifPubliFirstFoto(37, idfirstphoto);
+    fotoService.getToutesLesPhotosDuUser(15).then((res) => {
+      console.log(res);
+      const idfirstphoto = res.data[res.data.length - 1].ID;
+    });
+    // publicationService.getListePublication().then((res) => {
+    //   console.log(res);
     // });
   };
 
@@ -134,8 +136,8 @@ const RefreshTokenButton = () => {
   return (
     <div>
       <Button onClick={test4}>Obtenir les likes</Button>
-      <Button onClick={test6}>Test Requete patch</Button>
-      <Button onClick={test7}>Test Requete patch</Button>
+      <Button onClick={test1}>Publier un concours</Button>
+      <Button onClick={test3}>Test Requete patch</Button>
 
       <ul>
         {tabVotes.map((item, index) => (

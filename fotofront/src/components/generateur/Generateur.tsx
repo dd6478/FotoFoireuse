@@ -108,7 +108,9 @@ const Generateur = () => {
               boxSize="300px"
               objectFit="cover"
             />
-            <Text fontSize="xl">{titres[indexUn]}</Text>
+            <Text fontSize="xl" style={{ color: "white" }}>
+              {titres[indexUn]}
+            </Text>
           </VStack>
           <VStack spacing={4}>
             <Image
@@ -118,7 +120,9 @@ const Generateur = () => {
               boxSize="300px"
               objectFit="cover"
             />
-            <Text fontSize="xl">{titres[indexDeux]}</Text>
+            <Text fontSize="xl" style={{ color: "white" }}>
+              {titres[indexDeux]}
+            </Text>
           </VStack>
         </HStack>
         <Button onClick={handleStop} mt={4} colorScheme="teal">
