@@ -13,9 +13,6 @@ const schema = z
     username: z.string().min(3, {
       message: "Le nom de viking doit avoir au moins cinq charactères.",
     }),
-    last_name: z
-      .string()
-      .min(0, { message: "Le nom doit avoir au moins deux charactères." }),
     first_name: z
       .string()
       .min(2, { message: "Le prénom doit avoir au moins deux charactères." }),
@@ -122,9 +119,9 @@ const FotoForm = () => {
           type="text"
           className="form-control"
         ></input> */}
-        {errors.last_name && (
+        {/* {errors.last_name && (
           <p className="text-danger">{errors.last_name.message}</p>
-        )}
+        )} */}
         <label htmlFor="sexe" style={{ color: "white" }}>
           {" "}
           Sexe{" "}
