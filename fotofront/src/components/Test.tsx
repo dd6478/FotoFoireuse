@@ -21,22 +21,8 @@ const RefreshTokenButton = () => {
   var log = "";
   //post concours
   const test1 = async () => {
-    const response = await axios.post(
-      "https://dd64.fr/api/publications/1/",
-      {
-        name: "viking",
-        description: "on est la",
-        startDate: "2024-08-10",
-        endDate: "2024-09-08",
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access")}`,
-        },
-      }
-    );
+    const response = await publicationService.getListePublication();
     console.log(response);
-    console.log(response.data);
   };
   //obtenir l'id de publi d'un mec
   const test2 = async () => {

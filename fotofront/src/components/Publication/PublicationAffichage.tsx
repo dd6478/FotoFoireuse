@@ -128,9 +128,7 @@ const PublicationAffichage = () => {
         textAlign="left"
         width={{ base: `${windowSize}px`, md: "400px", lg: "400px" }}
         mx="auto"
-      >
-        {description}
-      </Text>
+      ></Text>
       <Container maxW="container.md" mt={1} centerContent>
         <Flex flexWrap="wrap" justifyContent="center">
           {files
