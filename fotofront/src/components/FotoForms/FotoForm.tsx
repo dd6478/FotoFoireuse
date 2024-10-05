@@ -13,13 +13,13 @@ const schema = z
     username: z.string().min(3, {
       message: "Le nom de viking doit avoir au moins cinq charactères.",
     }),
-    last_name: z
-      .string()
-      .min(0, { message: "Le nom doit avoir au moins deux charactères." }),
     first_name: z
       .string()
       .min(2, { message: "Le prénom doit avoir au moins deux charactères." }),
     sexe: z.string(),
+    last_name: z
+      .string()
+      .min(0, { message: "Le prénom doit avoir au moins deux charactères." }),
     email: z
       .string()
       .email({ message: "Veuillez entrer une adresse email valide." }),
@@ -112,19 +112,12 @@ const FotoForm = () => {
         {errors.first_name && (
           <p className="text-danger">{errors.first_name.message}</p>
         )}
-        {/* <label htmlFor="last_name" style={{ color: "white" }}>
-          {" "}
-          Prénom{" "}
-        </label>
         <input
           {...register("last_name")}
-          id="prenom"
-          type="text"
-          className="form-control"
-        ></input> */}
-        {errors.last_name && (
-          <p className="text-danger">{errors.last_name.message}</p>
-        )}
+          id="last_name"
+          type="hidden"
+          value="test"
+        ></input>
         <label htmlFor="sexe" style={{ color: "white" }}>
           {" "}
           Sexe{" "}
